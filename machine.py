@@ -71,12 +71,14 @@ class ControlUnit:
         return False
 
     def tick(self):
-        if self.halted: return
-        if self.check_interrupts(): return
+        if self.halted:
+            return
+        if self.check_interrupts():
+            return
 
         raw_instr = self.dp.memory[self.ip]
         if isinstance(raw_instr, int):
-            raw_instr = raw_instr.to_bytes(4, byteorder='little', signed=True)
+            raw_instr = raw_instr.to_bytes(4, byteorder="little", signed=True)
 
         opcode, arg = decode_instruction(raw_instr)
 
@@ -106,13 +108,28 @@ class ControlUnit:
             print(log_msg)
             return
 
-        if self.dp.shadow_active and opcode in [Opcode.LD, Opcode.LDI, Opcode.LD_PTR, Opcode.ADD, Opcode.SUB,
-                                                Opcode.MOD, Opcode.CMP]:
+        if self.dp.shadow_active and opcode in [
+            Opcode.LD,
+            Opcode.LDI,
+            Opcode.LD_PTR,
+            Opcode.ADD,
+            Opcode.SUB,
+            Opcode.MOD,
+            Opcode.CMP,
+        ]:
             self.dp.flush_shadow()
             parallel_flush = True
 
-        if self.dp.shadow_active and opcode in [Opcode.IN, Opcode.OUT, Opcode.JMP, Opcode.JZ, Opcode.JNZ, Opcode.JLT,
-                                                Opcode.JGT, Opcode.CALL]:
+        if self.dp.shadow_active and opcode in [
+            Opcode.IN,
+            Opcode.OUT,
+            Opcode.JMP,
+            Opcode.JZ,
+            Opcode.JNZ,
+            Opcode.JLT,
+            Opcode.JGT,
+            Opcode.CALL,
+        ]:
             self.dp.flush_shadow()
             self.ticks += 1
 
@@ -131,18 +148,22 @@ class ControlUnit:
         elif opcode == Opcode.MOD:
             self.dp.acc = to_signed32(self.dp.acc % self.dp.memory[arg])
         elif opcode == Opcode.CMP:
-            self.dp.zero_flag = (self.dp.acc == self.dp.memory[arg])
-            self.dp.negative_flag = (self.dp.acc < self.dp.memory[arg])
+            self.dp.zero_flag = self.dp.acc == self.dp.memory[arg]
+            self.dp.negative_flag = self.dp.acc < self.dp.memory[arg]
         elif opcode == Opcode.JMP:
             self.ip = arg
         elif opcode == Opcode.JZ:
-            if self.dp.zero_flag: self.ip = arg
+            if self.dp.zero_flag:
+                self.ip = arg
         elif opcode == Opcode.JNZ:
-            if not self.dp.zero_flag: self.ip = arg
+            if not self.dp.zero_flag:
+                self.ip = arg
         elif opcode == Opcode.JLT:
-            if self.dp.negative_flag: self.ip = arg
+            if self.dp.negative_flag:
+                self.ip = arg
         elif opcode == Opcode.JGT:
-            if not self.dp.zero_flag and not self.dp.negative_flag: self.ip = arg
+            if not self.dp.zero_flag and not self.dp.negative_flag:
+                self.ip = arg
         elif opcode == Opcode.IN:
             if arg == 1:
                 self.dp.acc = ord(self.port_data) if self.port_data else 0
@@ -189,16 +210,20 @@ class ControlUnit:
 
         isr_marker = "[ISR] " if not self.interrupt_enabled else ""
         log_msg = f"Tick {self.ticks:4} | {isr_marker}IP {current_ip:04} | {opcode.name:6} {arg} | ACC={self.dp.acc}"
-        if parallel_flush: log_msg += " | [Parallel Flush]"
+        if parallel_flush:
+            log_msg += " | [Parallel Flush]"
         print(log_msg)
+
+
 def simulate(binary_data, schedule):
     dp = DataPath()
     for i in range(0, len(binary_data), 4):
-        if i // 4 >= len(dp.memory): break
-        word = binary_data[i:i + 4]
+        if i // 4 >= len(dp.memory):
+            break
+        word = binary_data[i : i + 4]
         dp.memory[i // 4] = word
         if (i // 4) >= 1024:
-            dp.memory[i // 4] = int.from_bytes(word, byteorder='little', signed=True)
+            dp.memory[i // 4] = int.from_bytes(word, byteorder="little", signed=True)
 
     cu = ControlUnit(dp, schedule)
 
@@ -212,9 +237,9 @@ def simulate(binary_data, schedule):
     return out_text
 
 
-if __name__ == '__main__':
-    with open(sys.argv[1], 'rb') as f:
+if __name__ == "__main__":
+    with open(sys.argv[1], "rb") as f:
         binary = f.read()
-    with open(sys.argv[2], 'r', encoding='utf-8') as f:
+    with open(sys.argv[2], "r", encoding="utf-8") as f:
         schedule = json.load(f)
     simulate(binary, schedule)

@@ -31,6 +31,8 @@ def test_pipeline(golden, tmpdir, capsys):
     log_output = stdout.getvalue()
 
     if len(log_output) > 5000:
-        log_output = log_output[:2000] + "\n... [TRUNCATED LOG] ...\n" + log_output[-2000:]
+        log_output = (
+            log_output[:2000] + "\n... [TRUNCATED LOG] ...\n" + log_output[-2000:]
+        )
 
     assert log_output == golden.out.get("expected_log")

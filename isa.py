@@ -1,4 +1,3 @@
-import struct
 from enum import Enum
 
 
@@ -30,11 +29,11 @@ class Opcode(Enum):
 
 
 def encode_instruction(opcode: Opcode, arg: int = 0) -> bytes:
-    arg_bytes = arg.to_bytes(3, byteorder='little', signed=True)
+    arg_bytes = arg.to_bytes(3, byteorder="little", signed=True)
     return bytes([opcode.value]) + arg_bytes
 
 
 def decode_instruction(data: bytes):
     opcode = Opcode(data[0])
-    arg = int.from_bytes(data[1:4], byteorder='little', signed=True)
+    arg = int.from_bytes(data[1:4], byteorder="little", signed=True)
     return opcode, arg
