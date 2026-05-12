@@ -318,11 +318,14 @@ class LispCompiler:
 
 
 if __name__ == "__main__":
-    with open(sys.argv[1], "r", encoding="utf-8") as f:
-        source = f.read()
+    with open(sys.argv[1], "r", encoding="utf-8") as src_file:
+        source = src_file.read()
+
     binary, debug = LispCompiler().compile(LispParser(source).parse_program())
-    with open(sys.argv[2], "wb") as f:
-        f.write(binary)
+
+    with open(sys.argv[2], "wb") as bin_file:
+        bin_file.write(binary)
+
     if len(sys.argv) == 4:
-        with open(sys.argv[3], "w", encoding="utf-8") as f:
-            f.write(debug)
+        with open(sys.argv[3], "w", encoding="utf-8") as dbg_file:
+            dbg_file.write(debug)

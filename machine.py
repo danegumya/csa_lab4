@@ -238,8 +238,10 @@ def simulate(binary_data, schedule):
 
 
 if __name__ == "__main__":
-    with open(sys.argv[1], "rb") as f:
-        binary = f.read()
-    with open(sys.argv[2], "r", encoding="utf-8") as f:
-        schedule = json.load(f)
+    with open(sys.argv[1], "rb") as bin_file:
+        binary = bin_file.read()
+
+    with open(sys.argv[2], "r", encoding="utf-8") as sched_file:
+        schedule = json.load(sched_file)
+
     simulate(binary, schedule)
