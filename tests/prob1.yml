@@ -1,0 +1,108 @@
+source_code: |
+  (defvar sum 0)
+
+  (defun euler (i)
+      (if (= i 1000)
+          0
+          (if (= (mod i 3) 0)
+              (+ i (funcall euler (+ i 1)))
+              (if (= (mod i 5) 0)
+                  (+ i (funcall euler (+ i 1)))
+                  (funcall euler (+ i 1))
+              )
+          )
+      )
+  )
+
+  (setq sum (funcall euler 1))
+  (print sum)
+
+expected_log: |
+  --- Simulation Trace ---
+  Tick    1 | IP 0000 | JMP    3 | ACC=0
+  Tick    2 | IP 0003 | LDI    0 | ACC=0
+  Tick    3 | IP 0004 | ST     1024 | Deferred Store
+  Tick    4 | IP 0005 | LDI    1 | ACC=1 | [Parallel Flush]
+  Tick    5 | IP 0006 | ST     1025 | Deferred Store
+  Tick    6 | IP 0007 | LD     1026 | ACC=0 | [Parallel Flush]
+  Tick    7 | IP 0008 | PUSH   0 | ACC=0
+  Tick    8 | IP 0009 | LD     1025 | ACC=1
+  Tick    9 | IP 0010 | ST     1026 | Deferred Store
+  Tick   11 | IP 0011 | CALL   20 | ACC=1
+  Tick   12 | IP 0020 | LD     1026 | ACC=1
+  Tick   13 | IP 0021 | PUSH   0 | ACC=1
+  Tick   14 | IP 0022 | LDI    1000 | ACC=1000
+  Tick   15 | IP 0023 | ST     1028 | Deferred Store
+  Tick   16 | IP 0024 | POP    0 | ACC=1
+  Tick   17 | IP 0025 | CMP    1028 | ACC=1 | [Parallel Flush]
+  Tick   18 | IP 0026 | JZ     29 | ACC=1
+  Tick   19 | IP 0027 | LDI    0 | ACC=0
+  Tick   20 | IP 0028 | JMP    30 | ACC=0
+  Tick   21 | IP 0030 | CMP    1029 | ACC=0
+  Tick   22 | IP 0031 | JZ     34 | ACC=0
+  Tick   23 | IP 0034 | LD     1026 | ACC=1
+  Tick   24 | IP 0035 | PUSH   0 | ACC=1
+  Tick   25 | IP 0036 | LDI    3 | ACC=3
+  Tick   26 | IP 0037 | ST     1030 | Deferred Store
+  Tick   27 | IP 0038 | POP    0 | ACC=1
+  Tick   28 | IP 0039 | MOD    1030 | ACC=1 | [Parallel Flush]
+  Tick   29 | IP 0040 | PUSH   0 | ACC=1
+  Tick   30 | IP 0041 | LDI    0 | ACC=0
+  Tick   31 | IP 0042 | ST     1031 | Deferred Store
+  Tick   32 | IP 0043 | POP    0 | ACC=1
+  Tick   33 | IP 0044 | CMP    1031 | ACC=1 | [Parallel Flush]
+  Tick   34 | IP 0045 | JZ     48 | ACC=1
+  Tick   35 | IP 0046 | LDI    0 | ACC=0
+  Tick   36 | IP 0047 | JMP    49 | ACC=0
+  Tick   37 | IP 0049 | CMP    1029 | ACC=0
+  Tick   38 | IP 0050 | JZ     73 | ACC=0
+  Tick   39 | IP 0073 | LD     1026 | ACC=1
+  Tick   40 | IP 0074 | PUSH   0 | ACC=1
+  Tick   41 | IP 0075 | LDI    5 | ACC=5
+  Tick   42 | IP 0076 | ST     1036 | Deferred Store
+  Tick   43 | IP 0077 | POP    0 | ACC=1
+  Tick   44 | IP 0078 | MOD    1036 | ACC=1 | [Parallel Flush]
+  Tick   45 | IP 0079 | PUSH   0 | ACC=1
+  Tick   46 | IP 
+  ... [TRUNCATED LOG] ...
+     0 | ACC=9
+  Tick 54668 | IP 0071 | ADD    1035 | ACC=233154 | [Parallel Flush]
+  Tick 54669 | IP 0072 | JMP    122 | ACC=233154
+  Tick 54670 | IP 0122 | RET    0 | ACC=233154
+  Tick 54671 | IP 0065 | ST     1034 | Deferred Store
+  Tick 54672 | IP 0066 | POP    0 | ACC=6
+  Tick 54674 | IP 0067 | ST     1026 | Deferred Store
+  Tick 54675 | IP 0068 | LD     1034 | ACC=233154 | [Parallel Flush]
+  Tick 54676 | IP 0069 | ST     1035 | Deferred Store
+  Tick 54677 | IP 0070 | POP    0 | ACC=6
+  Tick 54678 | IP 0071 | ADD    1035 | ACC=233160 | [Parallel Flush]
+  Tick 54679 | IP 0072 | JMP    122 | ACC=233160
+  Tick 54680 | IP 0122 | RET    0 | ACC=233160
+  Tick 54681 | IP 0104 | ST     1040 | Deferred Store
+  Tick 54682 | IP 0105 | POP    0 | ACC=5
+  Tick 54684 | IP 0106 | ST     1026 | Deferred Store
+  Tick 54685 | IP 0107 | LD     1040 | ACC=233160 | [Parallel Flush]
+  Tick 54686 | IP 0108 | ST     1041 | Deferred Store
+  Tick 54687 | IP 0109 | POP    0 | ACC=5
+  Tick 54688 | IP 0110 | ADD    1041 | ACC=233165 | [Parallel Flush]
+  Tick 54689 | IP 0111 | JMP    122 | ACC=233165
+  Tick 54690 | IP 0122 | RET    0 | ACC=233165
+  Tick 54691 | IP 0065 | ST     1034 | Deferred Store
+  Tick 54692 | IP 0066 | POP    0 | ACC=3
+  Tick 54694 | IP 0067 | ST     1026 | Deferred Store
+  Tick 54695 | IP 0068 | LD     1034 | ACC=233165 | [Parallel Flush]
+  Tick 54696 | IP 0069 | ST     1035 | Deferred Store
+  Tick 54697 | IP 0070 | POP    0 | ACC=3
+  Tick 54698 | IP 0071 | ADD    1035 | ACC=233168 | [Parallel Flush]
+  Tick 54699 | IP 0072 | JMP    122 | ACC=233168
+  Tick 54700 | IP 0122 | RET    0 | ACC=233168
+  Tick 54701 | IP 0012 | ST     1027 | Deferred Store
+  Tick 54702 | IP 0013 | POP    0 | ACC=0
+  Tick 54704 | IP 0014 | ST     1026 | Deferred Store
+  Tick 54705 | IP 0015 | LD     1027 | ACC=233168 | [Parallel Flush]
+  Tick 54706 | IP 0016 | ST     1024 | Deferred Store
+  Tick 54707 | IP 0017 | LD     1024 | ACC=233168 | [Parallel Flush]
+  Tick 54708 | IP 0018 | OUT    1 | ACC=233168
+  Tick 54709 | IP 0019 | HLT    0 | ACC=233168
+  --- Output ---
+  233168

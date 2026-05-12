@@ -1,0 +1,128 @@
+schedule: '[[100, "A"],[150, "l"], [200, "i"], [250, "c"],[300, "e"], [350, "\n"]]'
+
+source_code: |-
+  (defvar done 0)
+  (defvar started 0)
+
+  (print_str "What is your name?\n")
+
+  (defirq
+      (defvar char (in 1))
+      
+      ; Если это первая буква, сначала здороваемся
+      (if (= started 0)
+          (setq started (print_str "Hello, "))
+          0
+      )
+      
+      ; Если пришел Enter (код 10), ставим флаг выхода
+      (if (= char 10)
+          (setq done (print_str "!\n"))
+          (print_char char)
+      )
+  )
+
+  (defun wait_loop ()
+      (if (= done 0)
+          (funcall wait_loop)
+          0
+      )
+  )
+
+  (funcall wait_loop)
+expected_log: |+
+  --- Simulation Trace ---
+  Tick    1 | IP 0000 | JMP    3 | ACC=0
+  Tick    2 | IP 0003 | LDI    0 | ACC=0
+  Tick    3 | IP 0004 | ST     1024 | Deferred Store
+  Tick    4 | IP 0005 | LDI    0 | ACC=0 | [Parallel Flush]
+  Tick    5 | IP 0006 | ST     1025 | Deferred Store
+  Tick    6 | IP 0007 | LDI    1026 | ACC=1026 | [Parallel Flush]
+  Tick    7 | IP 0008 | OUT    2 | ACC=1026
+  Tick    8 | IP 0009 | CALL   51 | ACC=1026
+  Tick    9 | IP 0051 | LD     1024 | ACC=0
+  Tick   10 | IP 0052 | PUSH   0 | ACC=0
+  Tick   11 | IP 0053 | LDI    0 | ACC=0
+  Tick   12 | IP 0054 | ST     1062 | Deferred Store
+  Tick   13 | IP 0055 | POP    0 | ACC=0
+  Tick   14 | IP 0056 | CMP    1062 | ACC=0 | [Parallel Flush]
+  Tick   15 | IP 0057 | JZ     60 | ACC=0
+  Tick   16 | IP 0060 | LDI    1 | ACC=1
+  Tick   17 | IP 0061 | CMP    1049 | ACC=1
+  Tick   18 | IP 0062 | JZ     65 | ACC=1
+  Tick   19 | IP 0063 | JMP    51 | ACC=1
+  Tick   20 | IP 0051 | LD     1024 | ACC=0
+  Tick   21 | IP 0052 | PUSH   0 | ACC=0
+  Tick   22 | IP 0053 | LDI    0 | ACC=0
+  Tick   23 | IP 0054 | ST     1062 | Deferred Store
+  Tick   24 | IP 0055 | POP    0 | ACC=0
+  Tick   25 | IP 0056 | CMP    1062 | ACC=0 | [Parallel Flush]
+  Tick   26 | IP 0057 | JZ     60 | ACC=0
+  Tick   27 | IP 0060 | LDI    1 | ACC=1
+  Tick   28 | IP 0061 | CMP    1049 | ACC=1
+  Tick   29 | IP 0062 | JZ     65 | ACC=1
+  Tick   30 | IP 0063 | JMP    51 | ACC=1
+  Tick   31 | IP 0051 | LD     1024 | ACC=0
+  Tick   32 | IP 0052 | PUSH   0 | ACC=0
+  Tick   33 | IP 0053 | LDI    0 | ACC=0
+  Tick   34 | IP 0054 | ST     1062 | Deferred Store
+  Tick   35 | IP 0055 | POP    0 | ACC=0
+  Tick   36 | IP 0056 | CMP    1062 | ACC=0 | [Parallel Flush]
+  Tick   37 | IP 0057 | JZ     60 | ACC=0
+  Tick   38 | IP 0060 | LDI    1 | ACC=1
+  Tick   39 | IP 0061 | CMP    1049 | ACC=1
+  Tick   40 | IP 0062 | JZ     65 | ACC=1
+  Tick   41 | IP 0063 | JMP    51 | ACC=1
+  Tick   42 | IP 0051 | LD     1024 | ACC=0
+  Tick   43 | IP 0052 | PUSH   0 | ACC=0
+  Tick   44 | IP 0053 | LDI    0 | ACC=0
+  Tick   45 | IP 0054 | ST     1062 | Deferred Store
+  T
+  ... [TRUNCATED LOG] ...
+   POP    0 | ACC=1050
+  Tick  363 | [ISR] IP 0020 | CMP    1048 | ACC=1050 | [Parallel Flush]
+  Tick  364 | [ISR] IP 0021 | JZ     24 | ACC=1050
+  Tick  365 | [ISR] IP 0022 | LDI    0 | ACC=0
+  Tick  366 | [ISR] IP 0023 | JMP    25 | ACC=0
+  Tick  367 | [ISR] IP 0025 | CMP    1049 | ACC=0
+  Tick  368 | [ISR] IP 0026 | JZ     31 | ACC=0
+  Tick  369 | [ISR] IP 0031 | LDI    0 | ACC=0
+  Tick  370 | [ISR] IP 0032 | LD     1047 | ACC=10
+  Tick  371 | [ISR] IP 0033 | PUSH   0 | ACC=10
+  Tick  372 | [ISR] IP 0034 | LDI    10 | ACC=10
+  Tick  373 | [ISR] IP 0035 | ST     1058 | Deferred Store
+  Tick  374 | [ISR] IP 0036 | POP    0 | ACC=10
+  Tick  375 | [ISR] IP 0037 | CMP    1058 | ACC=10 | [Parallel Flush]
+  Tick  376 | [ISR] IP 0038 | JZ     41 | ACC=10
+  Tick  377 | [ISR] IP 0041 | LDI    1 | ACC=1
+  Tick  378 | [ISR] IP 0042 | CMP    1049 | ACC=1
+  Tick  379 | [ISR] IP 0043 | JZ     48 | ACC=1
+  Tick  380 | [ISR] IP 0044 | LDI    1059 | ACC=1059
+  Tick  381 | [ISR] IP 0045 | OUT    2 | ACC=1059
+  Tick  382 | [ISR] IP 0046 | ST     1024 | Deferred Store
+  Tick  384 | [ISR] IP 0047 | JMP    50 | ACC=1059
+  Tick  385 | IP 0050 | IRET   0 | ACC=1
+  Tick  386 | IP 0061 | CMP    1049 | ACC=1
+  Tick  387 | IP 0062 | JZ     65 | ACC=1
+  Tick  388 | IP 0063 | JMP    51 | ACC=1
+  Tick  389 | IP 0051 | LD     1024 | ACC=1059
+  Tick  390 | IP 0052 | PUSH   0 | ACC=1059
+  Tick  391 | IP 0053 | LDI    0 | ACC=0
+  Tick  392 | IP 0054 | ST     1062 | Deferred Store
+  Tick  393 | IP 0055 | POP    0 | ACC=1059
+  Tick  394 | IP 0056 | CMP    1062 | ACC=1059 | [Parallel Flush]
+  Tick  395 | IP 0057 | JZ     60 | ACC=1059
+  Tick  396 | IP 0058 | LDI    0 | ACC=0
+  Tick  397 | IP 0059 | JMP    61 | ACC=0
+  Tick  398 | IP 0061 | CMP    1049 | ACC=0
+  Tick  399 | IP 0062 | JZ     65 | ACC=0
+  Tick  400 | IP 0065 | LDI    0 | ACC=0
+  Tick  401 | IP 0066 | RET    0 | ACC=0
+  Tick  402 | IP 0010 | ST     1046 | Deferred Store
+  Tick  403 | IP 0011 | LD     1046 | ACC=0 | [Parallel Flush]
+  Tick  404 | IP 0012 | HLT    0 | ACC=0
+  --- Output ---
+  What is your name?
+  Hello, Alice!
+
+...
