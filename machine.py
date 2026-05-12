@@ -227,11 +227,11 @@ def simulate(binary_data, schedule):
 
     cu = ControlUnit(dp, schedule)
 
-    print("Simulation Trace")
+    print("--- Simulation Trace ---")
     while not cu.halted and cu.ticks < 500000:
         cu.tick()
 
-    print("Output")
+    print("--- Output ---")
     out_text = "".join(cu.output_buffer)
     print(out_text)
     return out_text
