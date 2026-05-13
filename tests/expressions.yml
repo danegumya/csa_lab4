@@ -39,19 +39,19 @@ expected_log: |
   Tick   23 | IP 0024 | ADD    1056 | ACC=3 | [Parallel Flush]
   Tick   24 | IP 0025 | PUSH   0 | ACC=3
   Tick   25 | IP 0026 | LDI    3 | ACC=3
-  Tick   26 | IP 0027 | ST     1057 | Deferred Store
+  Tick   26 | IP 0027 | ST     1056 | Deferred Store
   Tick   27 | IP 0028 | POP    0 | ACC=3
-  Tick   28 | IP 0029 | ADD    1057 | ACC=6 | [Parallel Flush]
+  Tick   28 | IP 0029 | ADD    1056 | ACC=6 | [Parallel Flush]
   Tick   29 | IP 0030 | PUSH   0 | ACC=6
   Tick   30 | IP 0031 | LDI    4 | ACC=4
-  Tick   31 | IP 0032 | ST     1058 | Deferred Store
+  Tick   31 | IP 0032 | ST     1056 | Deferred Store
   Tick   32 | IP 0033 | POP    0 | ACC=6
-  Tick   33 | IP 0034 | ADD    1058 | ACC=10 | [Parallel Flush]
+  Tick   33 | IP 0034 | ADD    1056 | ACC=10 | [Parallel Flush]
   Tick   34 | IP 0035 | PUSH   0 | ACC=10
   Tick   35 | IP 0036 | LDI    5 | ACC=5
-  Tick   36 | IP 0037 | ST     1059 | Deferred Store
+  Tick   36 | IP 0037 | ST     1056 | Deferred Store
   Tick   37 | IP 0038 | POP    0 | ACC=10
-  Tick   38 | IP 0039 | ADD    1059 | ACC=15 | [Parallel Flush]
+  Tick   38 | IP 0039 | ADD    1056 | ACC=15 | [Parallel Flush]
   Tick   39 | IP 0040 | OUT    1 | ACC=15
   Tick   40 | IP 0041 | HLT    0 | ACC=15
   --- Output ---

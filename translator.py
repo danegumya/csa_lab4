@@ -61,7 +61,7 @@ class LispParser:
                     "expr": self.build_ast(expr[2]),
                 }
 
-            if op in ["+", "-", "mod", "=", "!=", "<", ">"]:
+            if op in ["+", "-", "*", "/", "mod", "=", "!=", "<", ">"]:
                 left_ast = self.build_ast(expr[1])
                 for i in range(2, len(expr)):
                     right_ast = self.build_ast(expr[i])
@@ -163,10 +163,7 @@ class LispCompiler:
             self.compile_expr(ast["left"])
             self.emit(Opcode.PUSH)
             self.compile_expr(ast["right"])
-
-            temp_right = self.alloc_var(f"__temp_right_{self.tmp_count}")
-            self.tmp_count += 1
-
+            temp_right = self.alloc_var("__temp_right")
             self.emit(Opcode.ST, temp_right)
             self.emit(Opcode.POP)
 
@@ -175,6 +172,10 @@ class LispCompiler:
                 self.emit(Opcode.ADD, temp_right)
             elif op == "-":
                 self.emit(Opcode.SUB, temp_right)
+            elif op == "*":
+                self.emit(Opcode.MUL, temp_right)
+            elif op == "/":
+                self.emit(Opcode.DIV, temp_right)
             elif op == "mod":
                 self.emit(Opcode.MOD, temp_right)
             elif op in ["=", "!=", "<", ">"]:

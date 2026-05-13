@@ -57,12 +57,12 @@ expected_log: |
   Tick   23 | IP 0067 | LD     1030 | ACC=3500000
   Tick   24 | IP 0068 | PUSH   0 | ACC=3500000
   Tick   25 | IP 0069 | LD     1028 | ACC=1000000
-  Tick   26 | IP 0070 | ST     1053 | Deferred Store
+  Tick   26 | IP 0070 | ST     1029 | Deferred Store
   Tick   27 | IP 0071 | POP    0 | ACC=3500000
-  Tick   28 | IP 0072 | CMP    1053 | ACC=3500000 | [Parallel Flush]
+  Tick   28 | IP 0072 | CMP    1029 | ACC=3500000 | [Parallel Flush]
   Tick   29 | IP 0073 | JGT    76 | ACC=3500000
   Tick   30 | IP 0076 | LDI    1 | ACC=1
-  Tick   31 | IP 0077 | CMP    1034 | ACC=1
+  Tick   31 | IP 0077 | CMP    1033 | ACC=1
   Tick   32 | IP 0078 | JZ     82 | ACC=1
   Tick   33 | IP 0079 | LDI    1 | ACC=1
   Tick   34 | IP 0080 | ST     1031 | Deferred Store
@@ -73,39 +73,39 @@ expected_log: |
   Tick   40 | IP 0025 | LD     1031 | ACC=1
   Tick   41 | IP 0026 | PUSH   0 | ACC=1
   Tick   42 | IP 0027 | LDI    1 | ACC=1
-  Tick   43 | IP 0028 | ST     1033 | Deferred Store
+  Tick   43 | IP 0028 | ST     1029 | Deferred Store
   Tick   44 | IP 0029 | POP    0 | ACC=1
-  Tick   45 | IP 0030 | CMP    1033 | ACC=1 | [Parallel Flush]
+  Tick   45 | IP 0030 | CMP    1029 | ACC=1 | [Parallel Flush]
   Tick   46 | IP 0031 | JZ     34 | ACC=1
   Tick   47 | IP 0034 | LDI    1 | ACC=1
-  Tick   48 | IP 0035 | CMP    1034 | ACC=1
+  Tick   48 | IP 0035 | CMP    1033 | ACC=1
   Tick   49 | IP 0036 | JZ     45 | ACC=1
   Tick   50 | IP 0037 | LD     1030 | ACC=3500000
   Tick   51 | IP 0038 | PUSH   0 | ACC=3500000
   Tick   52 | IP 0039 | LD     1028 | ACC=1000000
-  Tick   53 | IP 0040 | ST     1035 | Deferred Store
+  Tick   53 | IP 0040 | ST     1029 | Deferred Store
   Tick   54 | IP 0041 | POP    0 | ACC=3500000
-  Tick   55 | IP 0042 | SUB    1035 | ACC=2500000 | [Parallel Flush]
+  Tick   55 | IP 0042 | SUB    1029 | ACC=2500000 | [Parallel Flush]
   Tick   56 | IP 0043 | ST     1030 | Deferred Store
   Tick   58 | IP 0044 | JMP    46 | ACC=2500000
   Tick   59 | IP 0046 | LD     1024 | ACC=1000
   Tick   60 | IP 0047 | PUSH   0 | ACC=1000
   Tick   61 | IP 0048 | LD     1026 | ACC=3000
-  Tick   62 | IP 0049 | ST     1036 | Deferred Store
+  Tick   62 | IP 0049 | ST     1029 | Deferred Store
   Tick   63 | IP 0050 | POP    0 | ACC=1000
-  Tick   64 | IP 0051 | ADD    1036 | ACC=4000 | [Parallel Flush]
+  Tick   64 | IP 0051 | ADD    1029 | ACC=4000 | [Parallel Flush]
   Tick   65 | IP 0052 | PUSH   0 | ACC=4000
   Tick   66 | IP 0053 | LD     1031 | ACC=1
-  Tick   67 | IP 0054 | ST     1037 | Deferred Store
+  Tick   67 | IP 0054 | ST     1029 | Deferred Store
   Tick   68 | IP 0055 | POP    0 | ACC=4000
-  Tick   69 | IP 0056 | ADD    1037 | ACC=4001 | [Parallel Flush]
-  Tick   70 | IP 0057 | ST     1038 | Deferred Store
-  Tick   71 | IP 0058 | LDI    1039 | ACC=1039 | [Parallel Flush]
-  Tick   72 | IP 0059 | OUT    2 | ACC=1039
-  Tick   73 | IP 0060 | LD     1038 | ACC=4001
+  Tick   69 | IP 0056 | ADD    1029 | ACC=4001 | [Parallel Flush]
+  Tick   70 | IP 0057 | ST     1034 | Deferred Store
+  Tick   71 | IP 0058 | LDI    1035 | ACC=1035 | [Parallel Flush]
+  Tick   72 | IP 0059 | OUT    2 | ACC=1035
+  Tick   73 | IP 0060 | LD     1034 | ACC=4001
   Tick   74 | IP 0061 | OUT    1 | ACC=4001
-  Tick   75 | IP 0062 | LDI    1046 | ACC=1046
-  Tick   76 | IP 0063 | OUT    2 | ACC=1046
+  Tick   75 | IP 0062 | LDI    1042 | ACC=1042
+  Tick   76 | IP 0063 | OUT    2 | ACC=1042
   Tick   77 | IP 0064 | LD     1030 | ACC=2500000
   Tick   78 | IP 0065 | OUT    1 | ACC=2500000
   Tick   79 | IP 0066 | HLT    0 | ACC=2500000

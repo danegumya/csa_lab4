@@ -12,14 +12,11 @@ class DataPath:
     def __init__(self, memory_size=16384):
         self.memory = [0] * memory_size
         self.acc = 0
-
         self.shadow_acc = 0
         self.shadow_addr = None
         self.shadow_active = False
-
         self.zero_flag = False
         self.negative_flag = False
-
         self.sp = memory_size - 1
 
     def flush_shadow(self):
@@ -38,7 +35,6 @@ class ControlUnit:
         self.schedule = schedule
         self.port_data = None
         self.irq_line = False
-
         self.output_buffer = []
         self.interrupt_enabled = True
         self.halted = False
@@ -114,6 +110,8 @@ class ControlUnit:
             Opcode.LD_PTR,
             Opcode.ADD,
             Opcode.SUB,
+            Opcode.MUL,
+            Opcode.DIV,
             Opcode.MOD,
             Opcode.CMP,
         ]:
@@ -145,6 +143,10 @@ class ControlUnit:
             self.dp.acc = to_signed32(self.dp.acc + self.dp.memory[arg])
         elif opcode == Opcode.SUB:
             self.dp.acc = to_signed32(self.dp.acc - self.dp.memory[arg])
+        elif opcode == Opcode.MUL:
+            self.dp.acc = to_signed32(self.dp.acc * self.dp.memory[arg])
+        elif opcode == Opcode.DIV:
+            self.dp.acc = to_signed32(self.dp.acc // self.dp.memory[arg])
         elif opcode == Opcode.MOD:
             self.dp.acc = to_signed32(self.dp.acc % self.dp.memory[arg])
         elif opcode == Opcode.CMP:
@@ -196,13 +198,10 @@ class ControlUnit:
             flags = self.dp.memory[self.dp.sp]
             self.dp.zero_flag = bool(flags & 2)
             self.dp.negative_flag = bool(flags & 1)
-
             self.dp.sp += 1
             self.dp.acc = self.dp.memory[self.dp.sp]
-
             self.dp.sp += 1
             self.ip = self.dp.memory[self.dp.sp]
-
             self.interrupt_enabled = True
         elif opcode == Opcode.HLT:
             self.dp.flush_shadow()
@@ -228,7 +227,7 @@ def simulate(binary_data, schedule):
     cu = ControlUnit(dp, schedule)
 
     print("--- Simulation Trace ---")
-    while not cu.halted and cu.ticks < 500000:
+    while not cu.halted and cu.ticks < 5000000:
         cu.tick()
 
     print("--- Output ---")

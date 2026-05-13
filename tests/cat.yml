@@ -30,7 +30,7 @@ expected_log: |
   Tick    6 | IP 0031 | LD     1024 | ACC=0
   Tick    7 | IP 0032 | PUSH   0 | ACC=0
   Tick    8 | IP 0033 | LDI    0 | ACC=0
-  Tick    9 | IP 0034 | ST     1029 | Deferred Store
+  Tick    9 | IP 0034 | ST     1027 | Deferred Store
   Tick   10 | IP 0035 | POP    0 | ACC=0
   Tick   16 | [ISR] IP 0001 | JMP    9 | ACC=0
   Tick   17 | [ISR] IP 0009 | LDI    0 | ACC=0
@@ -51,7 +51,7 @@ expected_log: |
   Tick   33 | [ISR] IP 0028 | LD     1026 | ACC=65
   Tick   34 | [ISR] IP 0029 | OUT    1 | ACC=65
   Tick   35 | IP 0030 | IRET   0 | ACC=0
-  Tick   36 | IP 0036 | CMP    1029 | ACC=0
+  Tick   36 | IP 0036 | CMP    1027 | ACC=0
   Tick   37 | IP 0037 | JZ     40 | ACC=0
   Tick   38 | IP 0040 | LDI    1 | ACC=1
   Tick   39 | IP 0041 | CMP    1028 | ACC=1
@@ -60,9 +60,9 @@ expected_log: |
   Tick   42 | IP 0031 | LD     1024 | ACC=0
   Tick   43 | IP 0032 | PUSH   0 | ACC=0
   Tick   44 | IP 0033 | LDI    0 | ACC=0
-  Tick   45 | IP 0034 | ST     1029 | Deferred Store
+  Tick   45 | IP 0034 | ST     1027 | Deferred Store
   Tick   46 | IP 0035 | POP    0 | ACC=0
-  Tick   47 | IP 0036 | CMP    1029 | ACC=0 | [Parallel Flush]
+  Tick   47 | IP 0036 | CMP    1027 | ACC=0 | [Parallel Flush]
   Tick   48 | IP 0037 | JZ     40 | ACC=0
   Tick   49 | IP 0040 | LDI    1 | ACC=1
   Tick   50 | IP 0041 | CMP    1028 | ACC=1
@@ -87,9 +87,9 @@ expected_log: |
   Tick  124 | [ISR] IP 0027 | JMP    30 | ACC=1
   Tick  125 | IP 0030 | IRET   0 | ACC=0
   Tick  126 | IP 0033 | LDI    0 | ACC=0
-  Tick  127 | IP 0034 | ST     1029 | Deferred Store
+  Tick  127 | IP 0034 | ST     1027 | Deferred Store
   Tick  128 | IP 0035 | POP    0 | ACC=0
-  Tick  129 | IP 0036 | CMP    1029 | ACC=0 | [Parallel Flush]
+  Tick  129 | IP 0036 | CMP    1027 | ACC=0 | [Parallel Flush]
   Tick  130 | IP 0037 | JZ     40 | ACC=0
   Tick  131 | IP 0040 | LDI    1 | ACC=1
   Tick  132 | IP 0041 | CMP    1028 | ACC=1
@@ -98,9 +98,9 @@ expected_log: |
   Tick  135 | IP 0031 | LD     1024 | ACC=1
   Tick  136 | IP 0032 | PUSH   0 | ACC=1
   Tick  137 | IP 0033 | LDI    0 | ACC=0
-  Tick  138 | IP 0034 | ST     1029 | Deferred Store
+  Tick  138 | IP 0034 | ST     1027 | Deferred Store
   Tick  139 | IP 0035 | POP    0 | ACC=1
-  Tick  140 | IP 0036 | CMP    1029 | ACC=1 | [Parallel Flush]
+  Tick  140 | IP 0036 | CMP    1027 | ACC=1 | [Parallel Flush]
   Tick  141 | IP 0037 | JZ     40 | ACC=1
   Tick  142 | IP 0038 | LDI    0 | ACC=0
   Tick  143 | IP 0039 | JMP    41 | ACC=0

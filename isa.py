@@ -26,6 +26,8 @@ class Opcode(Enum):
     ST_PTR = 20  # Mem[Mem[arg]] = ACC
     JLT = 21  # Переход если ACC < Mem
     JGT = 22  # Переход если ACC > Mem
+    MUL = 23
+    DIV = 24
 
 
 def encode_instruction(opcode: Opcode, arg: int = 0) -> bytes:

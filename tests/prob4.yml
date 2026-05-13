@@ -1,0 +1,133 @@
+source_code: |
+  (defvar max_pal 0)
+
+  (defun reverse_num (n rev)
+      (if (= n 0)
+          rev
+          (funcall reverse_num (/ n 10) (+ (* rev 10) (mod n 10)))
+      )
+  )
+
+  (defun inner_loop (i j)
+      (if (< j 100)
+          0
+          (if (< (* i j) max_pal)
+              0
+              (if (= (funcall reverse_num (* i j) 0) (* i j))
+                  (setq max_pal (* i j))
+                  (funcall inner_loop i (- j 1))
+              )
+          )
+      )
+  )
+
+  (defun outer_loop (i)
+      (if (< i 100)
+          0
+          (if (< (* i 999) max_pal)
+              0
+              (funcall inner_loop i 999)
+          )
+      )
+      
+      (if (< i 100)
+          0
+          (if (< (* i 999) max_pal)
+              0
+              (funcall outer_loop (- i 1))
+          )
+      )
+  )
+
+  (funcall outer_loop 999)
+  (print max_pal)
+
+expected_log: |
+  --- Simulation Trace ---
+  Tick    1 | IP 0000 | JMP    3 | ACC=0
+  Tick    2 | IP 0003 | LDI    0 | ACC=0
+  Tick    3 | IP 0004 | ST     1024 | Deferred Store
+  Tick    4 | IP 0005 | LDI    999 | ACC=999 | [Parallel Flush]
+  Tick    5 | IP 0006 | ST     1025 | Deferred Store
+  Tick    6 | IP 0007 | LD     1026 | ACC=0 | [Parallel Flush]
+  Tick    7 | IP 0008 | PUSH   0 | ACC=0
+  Tick    8 | IP 0009 | LD     1025 | ACC=999
+  Tick    9 | IP 0010 | ST     1026 | Deferred Store
+  Tick   11 | IP 0011 | CALL   159 | ACC=999
+  Tick   12 | IP 0159 | LD     1026 | ACC=999
+  Tick   13 | IP 0160 | PUSH   0 | ACC=999
+  Tick   14 | IP 0161 | LDI    100 | ACC=100
+  Tick   15 | IP 0162 | ST     1029 | Deferred Store
+  Tick   16 | IP 0163 | POP    0 | ACC=999
+  Tick   17 | IP 0164 | CMP    1029 | ACC=999 | [Parallel Flush]
+  Tick   18 | IP 0165 | JLT    168 | ACC=999
+  Tick   19 | IP 0166 | LDI    0 | ACC=0
+  Tick   20 | IP 0167 | JMP    169 | ACC=0
+  Tick   21 | IP 0169 | CMP    1030 | ACC=0
+  Tick   22 | IP 0170 | JZ     173 | ACC=0
+  Tick   23 | IP 0173 | LD     1026 | ACC=999
+  Tick   24 | IP 0174 | PUSH   0 | ACC=999
+  Tick   25 | IP 0175 | LDI    999 | ACC=999
+  Tick   26 | IP 0176 | ST     1029 | Deferred Store
+  Tick   27 | IP 0177 | POP    0 | ACC=999
+  Tick   28 | IP 0178 | MUL    1029 | ACC=998001 | [Parallel Flush]
+  Tick   29 | IP 0179 | PUSH   0 | ACC=998001
+  Tick   30 | IP 0180 | LD     1024 | ACC=0
+  Tick   31 | IP 0181 | ST     1029 | Deferred Store
+  Tick   32 | IP 0182 | POP    0 | ACC=998001
+  Tick   33 | IP 0183 | CMP    1029 | ACC=998001 | [Parallel Flush]
+  Tick   34 | IP 0184 | JLT    187 | ACC=998001
+  Tick   35 | IP 0185 | LDI    0 | ACC=0
+  Tick   36 | IP 0186 | JMP    188 | ACC=0
+  Tick   37 | IP 0188 | CMP    1030 | ACC=0
+  Tick   38 | IP 0189 | JZ     192 | ACC=0
+  Tick   39 | IP 0192 | LD     1026 | ACC=999
+  Tick   40 | IP 0193 | ST     1040 | Deferred Store
+  Tick   41 | IP 0194 | LDI    999 | ACC=999 | [Parallel Flush]
+  Tick   42 | IP 0195 | ST     1041 | Deferred Store
+  Tick   43 | IP 0196 | LD     1026 | ACC=999 | [Parallel 
+  ... [TRUNCATED LOG] ...
+  3
+  Tick 2858989 | IP 0187 | LDI    1 | ACC=1
+  Tick 2858990 | IP 0188 | CMP    1030 | ACC=1
+  Tick 2858991 | IP 0189 | JZ     192 | ACC=1
+  Tick 2858992 | IP 0190 | LDI    0 | ACC=0
+  Tick 2858993 | IP 0191 | JMP    211 | ACC=0
+  Tick 2858994 | IP 0211 | LD     1026 | ACC=907
+  Tick 2858995 | IP 0212 | PUSH   0 | ACC=907
+  Tick 2858996 | IP 0213 | LDI    100 | ACC=100
+  Tick 2858997 | IP 0214 | ST     1029 | Deferred Store
+  Tick 2858998 | IP 0215 | POP    0 | ACC=907
+  Tick 2858999 | IP 0216 | CMP    1029 | ACC=907 | [Parallel Flush]
+  Tick 2859000 | IP 0217 | JLT    220 | ACC=907
+  Tick 2859001 | IP 0218 | LDI    0 | ACC=0
+  Tick 2859002 | IP 0219 | JMP    221 | ACC=0
+  Tick 2859003 | IP 0221 | CMP    1030 | ACC=0
+  Tick 2859004 | IP 0222 | JZ     225 | ACC=0
+  Tick 2859005 | IP 0225 | LD     1026 | ACC=907
+  Tick 2859006 | IP 0226 | PUSH   0 | ACC=907
+  Tick 2859007 | IP 0227 | LDI    999 | ACC=999
+  Tick 2859008 | IP 0228 | ST     1029 | Deferred Store
+  Tick 2859009 | IP 0229 | POP    0 | ACC=907
+  Tick 2859010 | IP 0230 | MUL    1029 | ACC=906093 | [Parallel Flush]
+  Tick 2859011 | IP 0231 | PUSH   0 | ACC=906093
+  Tick 2859012 | IP 0232 | LD     1024 | ACC=906609
+  Tick 2859013 | IP 0233 | ST     1029 | Deferred Store
+  Tick 2859014 | IP 0234 | POP    0 | ACC=906093
+  Tick 2859015 | IP 0235 | CMP    1029 | ACC=906093 | [Parallel Flush]
+  Tick 2859016 | IP 0236 | JLT    239 | ACC=906093
+  Tick 2859017 | IP 0239 | LDI    1 | ACC=1
+  Tick 2859018 | IP 0240 | CMP    1030 | ACC=1
+  Tick 2859019 | IP 0241 | JZ     244 | ACC=1
+  Tick 2859020 | IP 0242 | LDI    0 | ACC=0
+  Tick 2859021 | IP 0243 | JMP    254 | ACC=0
+  Tick 2859022 | IP 0254 | RET    0 | ACC=0
+  Tick 2859023 | IP 0012 | ST     1027 | Deferred Store
+  Tick 2859024 | IP 0013 | POP    0 | ACC=0
+  Tick 2859026 | IP 0014 | ST     1026 | Deferred Store
+  Tick 2859027 | IP 0015 | LD     1027 | ACC=0 | [Parallel Flush]
+  Tick 2859028 | IP 0016 | LD     1024 | ACC=906609
+  Tick 2859029 | IP 0017 | OUT    1 | ACC=906609
+  Tick 2859030 | IP 0018 | HLT    0 | ACC=906609
+  --- Output ---
+  906609
