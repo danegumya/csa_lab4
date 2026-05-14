@@ -361,7 +361,6 @@ class LispCompiler:
 
 
 if __name__ == "__main__":
-
     with open(sys.argv[1], "r", encoding="utf-8") as src_file:
         source = src_file.read()
 
