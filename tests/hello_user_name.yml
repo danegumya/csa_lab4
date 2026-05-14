@@ -1,4 +1,5 @@
-schedule: '[[100, "A"],[150, "l"], [200, "i"], [250, "c"],[300, "e"], [350, "\n"]]'
+schedule: '[[1000, "A"], [2000, "l"], [3000, "i"], [4000, "c"], [5000, "e"], [6000,
+  "\n"]]'
 
 source_code: |-
   (defvar done 0)
@@ -30,96 +31,98 @@ source_code: |-
   )
 
   (funcall wait_loop)
-expected_log: |
+expected_log: |+
   --- Simulation Trace ---
-  Tick    1 | IP 0000 | JMP    3 | ACC=0
-  Tick    2 | IP 0003 | LDI    0 | ACC=0
-  Tick    3 | IP 0004 | ST     1024 | Deferred Store
-  Tick    4 | IP 0005 | LDI    0 | ACC=0 | [Parallel Flush]
-  Tick    5 | IP 0006 | ST     1025 | Deferred Store
-  Tick    6 | IP 0007 | LDI    1026 | ACC=1026 | [Parallel Flush]
-  Tick    7 | IP 0008 | OUT    2 | ACC=1026
-  Tick    8 | IP 0009 | CALL   51 | ACC=1026
-  Tick    9 | IP 0051 | LD     1024 | ACC=0
-  Tick   10 | IP 0052 | PUSH   0 | ACC=0
-  Tick   11 | IP 0053 | LDI    0 | ACC=0
-  Tick   12 | IP 0054 | ST     1048 | Deferred Store
-  Tick   13 | IP 0055 | POP    0 | ACC=0
-  Tick   14 | IP 0056 | CMP    1048 | ACC=0 | [Parallel Flush]
-  Tick   15 | IP 0057 | JZ     60 | ACC=0
-  Tick   16 | IP 0060 | LDI    1 | ACC=1
-  Tick   17 | IP 0061 | CMP    1049 | ACC=1
-  Tick   18 | IP 0062 | JZ     65 | ACC=1
-  Tick   19 | IP 0063 | JMP    51 | ACC=1
-  Tick   20 | IP 0051 | LD     1024 | ACC=0
-  Tick   21 | IP 0052 | PUSH   0 | ACC=0
+  Tick    2 | IP 0000 | JMP    3 | ACC=0
+  Tick    4 | IP 0003 | LDI    0 | ACC=0
+  Tick    6 | IP 0004 | ST     1024 | Deferred Store
+  Tick    8 | IP 0005 | LDI    0 | ACC=0 | [Parallel Flush]
+  Tick   10 | IP 0006 | ST     1025 | Deferred Store
+  Tick   12 | IP 0007 | LDI    1026 | ACC=1026 | [Parallel Flush]
+  Tick   14 | IP 0008 | OUT    2 | ACC=1026
+  Tick   16 | IP 0009 | CALL   51 | ACC=1026
+  Tick   18 | IP 0051 | LD     1024 | ACC=0
+  Tick   20 | IP 0052 | PUSH   0 | ACC=0
   Tick   22 | IP 0053 | LDI    0 | ACC=0
-  Tick   23 | IP 0054 | ST     1048 | Deferred Store
-  Tick   24 | IP 0055 | POP    0 | ACC=0
-  Tick   25 | IP 0056 | CMP    1048 | ACC=0 | [Parallel Flush]
-  Tick   26 | IP 0057 | JZ     60 | ACC=0
-  Tick   27 | IP 0060 | LDI    1 | ACC=1
-  Tick   28 | IP 0061 | CMP    1049 | ACC=1
-  Tick   29 | IP 0062 | JZ     65 | ACC=1
-  Tick   30 | IP 0063 | JMP    51 | ACC=1
-  Tick   31 | IP 0051 | LD     1024 | ACC=0
-  Tick   32 | IP 0052 | PUSH   0 | ACC=0
-  Tick   33 | IP 0053 | LDI    0 | ACC=0
-  Tick   34 | IP 0054 | ST     1048 | Deferred Store
-  Tick   35 | IP 0055 | POP    0 | ACC=0
-  Tick   36 | IP 0056 | CMP    1048 | ACC=0 | [Parallel Flush]
-  Tick   37 | IP 0057 | JZ     60 | ACC=0
-  Tick   38 | IP 0060 | LDI    1 | ACC=1
-  Tick   39 | IP 0061 | CMP    1049 | ACC=1
-  Tick   40 | IP 0062 | JZ     65 | ACC=1
-  Tick   41 | IP 0063 | JMP    51 | ACC=1
-  Tick   42 | IP 0051 | LD     1024 | ACC=0
-  Tick   43 | IP 0052 | PUSH   0 | ACC=0
+  Tick   24 | IP 0054 | ST     1062 | Deferred Store
+  Tick   26 | IP 0055 | POP    0 | ACC=0 | [Parallel Flush]
+  Tick   28 | IP 0056 | CMP    1062 | ACC=0
+  Tick   30 | IP 0057 | JZ     60 | ACC=0
+  Tick   32 | IP 0060 | LDI    1 | ACC=1
+  Tick   34 | IP 0061 | CMP    1049 | ACC=1
+  Tick   36 | IP 0062 | JZ     65 | ACC=1
+  Tick   38 | IP 0063 | JMP    51 | ACC=1
+  Tick   40 | IP 0051 | LD     1024 | ACC=0
+  Tick   42 | IP 0052 | PUSH   0 | ACC=0
   Tick   44 | IP 0053 | LDI    0 | ACC=0
-  Tick   45 | IP 0054 | ST     1048 | Deferred Store
+  Tick   46 | IP 0054 | ST     1062 | Deferred Store
+  Tick   48 | IP 0055 | POP    0 | ACC=0 | [Parallel Flush]
+  Tick   50 | IP 0056 | CMP    1062 | ACC=0
+  Tick   52 | IP 0057 | JZ     60 | ACC=0
+  Tick   54 | IP 0060 | LDI    1 | ACC=1
+  Tick   56 | IP 0061 | CMP    1049 | ACC=1
+  Tick   58 | IP 0062 | JZ     65 | ACC=1
+  Tick   60 | IP 0063 | JMP    51 | ACC=1
+  Tick   62 | IP 0051 | LD     1024 | ACC=0
+  Tick   64 | IP 0052 | PUSH   0 | ACC=0
+  Tick   66 | IP 0053 | LDI    0 | ACC=0
+  Tick   68 | IP 0054 | ST     1062 | Deferred Store
+  Tick   70 | IP 0055 | POP    0 | ACC=0 | [Parallel Flush]
+  Tick   72 | IP 0056 | CMP    1062 | ACC=0
+  Tick   74 | IP 0057 | JZ     60 | ACC=0
+  Tick   76 | IP 0060 | LDI    1 | ACC=1
+  Tick   78 | IP 0061 | CMP    1049 | ACC=1
+  Tick   80 | IP 0062 | JZ     65 | ACC=1
+  Tick   82 | IP 0063 | JMP    51 | ACC=1
+  Tick   84 | IP 0051 | LD     1024 | ACC=0
+  Tick   86 | IP 0052 | PUSH   0 | ACC=0
+  Tick   88 | IP 0053 | LDI    0 | ACC=0
+  Tick   90 | IP 0054 | ST     1062 | Deferred Store
   T
   ... [TRUNCATED LOG] ...
-  108 | [ISR] IP 0014 | ST     1047 | Deferred Store
-  Tick  109 | [ISR] IP 0015 | LD     1025 | ACC=0 | [Parallel Flush]
-  Tick  110 | [ISR] IP 0016 | PUSH   0 | ACC=0
-  Tick  111 | [ISR] IP 0017 | LDI    0 | ACC=0
-  Tick  112 | [ISR] IP 0018 | ST     1048 | Deferred Store
-  Tick  113 | [ISR] IP 0019 | POP    0 | ACC=0
-  Tick  114 | [ISR] IP 0020 | CMP    1048 | ACC=0 | [Parallel Flush]
-  Tick  115 | [ISR] IP 0021 | JZ     24 | ACC=0
-  Tick  116 | [ISR] IP 0024 | LDI    1 | ACC=1
-  Tick  117 | [ISR] IP 0025 | CMP    1049 | ACC=1
-  Tick  118 | [ISR] IP 0026 | JZ     31 | ACC=1
-  Tick  119 | [ISR] IP 0027 | LDI    1050 | ACC=1050
-  Tick  120 | [ISR] IP 0028 | OUT    2 | ACC=1050
-  Tick  121 | [ISR] IP 0029 | ST     1025 | Deferred Store
-  Tick  123 | [ISR] IP 0030 | JMP    32 | ACC=1050
-  Tick  124 | [ISR] IP 0032 | LD     1047 | ACC=65
-  Tick  125 | [ISR] IP 0033 | PUSH   0 | ACC=65
-  Tick  126 | [ISR] IP 0034 | LDI    10 | ACC=10
-  Tick  127 | [ISR] IP 0035 | ST     1048 | Deferred Store
-  Tick  128 | [ISR] IP 0036 | POP    0 | ACC=65
-  Tick  129 | [ISR] IP 0037 | CMP    1048 | ACC=65 | [Parallel Flush]
-  Tick  130 | [ISR] IP 0038 | JZ     41 | ACC=65
-  Tick  131 | [ISR] IP 0039 | LDI    0 | ACC=0
-  Tick  132 | [ISR] IP 0040 | JMP    42 | ACC=0
-  Tick  133 | [ISR] IP 0042 | CMP    1049 | ACC=0
-  Tick  134 | [ISR] IP 0043 | JZ     48 | ACC=0
-  Tick  135 | [ISR] IP 0048 | LD     1047 | ACC=65
-  Tick  136 | [ISR] IP 0049 | OUT    3 | ACC=65
-  Tick  137 | IP 0050 | IRET   0 | ACC=0
-  Tick  138 | IP 0055 | POP    0 | ACC=0
-  Tick  139 | IP 0056 | CMP    1048 | ACC=0
-  Tick  140 | IP 0057 | JZ     60 | ACC=0
-  Tick  141 | IP 0058 | LDI    0 | ACC=0
-  Tick  142 | IP 0059 | JMP    61 | ACC=0
-  Tick  143 | IP 0061 | CMP    1049 | ACC=0
-  Tick  144 | IP 0062 | JZ     65 | ACC=0
-  Tick  145 | IP 0065 | LDI    0 | ACC=0
-  Tick  146 | IP 0066 | RET    0 | ACC=0
-  Tick  147 | IP 0010 | ST     1046 | Deferred Store
-  Tick  148 | IP 0011 | LD     1046 | ACC=0 | [Parallel Flush]
-  Tick  149 | IP 0012 | HLT    0 | ACC=0
+  17 | [ISR] IP 0017 | LDI    0 | ACC=0
+  Tick 6019 | [ISR] IP 0018 | ST     1048 | Deferred Store
+  Tick 6021 | [ISR] IP 0019 | POP    0 | ACC=1050 | [Parallel Flush]
+  Tick 6023 | [ISR] IP 0020 | CMP    1048 | ACC=1050
+  Tick 6025 | [ISR] IP 0021 | JZ     24 | ACC=1050
+  Tick 6027 | [ISR] IP 0022 | LDI    0 | ACC=0
+  Tick 6029 | [ISR] IP 0023 | JMP    25 | ACC=0
+  Tick 6031 | [ISR] IP 0025 | CMP    1049 | ACC=0
+  Tick 6033 | [ISR] IP 0026 | JZ     31 | ACC=0
+  Tick 6035 | [ISR] IP 0031 | LDI    0 | ACC=0
+  Tick 6037 | [ISR] IP 0032 | LD     1047 | ACC=10
+  Tick 6039 | [ISR] IP 0033 | PUSH   0 | ACC=10
+  Tick 6041 | [ISR] IP 0034 | LDI    10 | ACC=10
+  Tick 6043 | [ISR] IP 0035 | ST     1058 | Deferred Store
+  Tick 6045 | [ISR] IP 0036 | POP    0 | ACC=10 | [Parallel Flush]
+  Tick 6047 | [ISR] IP 0037 | CMP    1058 | ACC=10
+  Tick 6049 | [ISR] IP 0038 | JZ     41 | ACC=10
+  Tick 6051 | [ISR] IP 0041 | LDI    1 | ACC=1
+  Tick 6053 | [ISR] IP 0042 | CMP    1049 | ACC=1
+  Tick 6055 | [ISR] IP 0043 | JZ     48 | ACC=1
+  Tick 6057 | [ISR] IP 0044 | LDI    1059 | ACC=1059
+  Tick 6059 | [ISR] IP 0045 | OUT    2 | ACC=1059
+  Tick 6061 | [ISR] IP 0046 | ST     1024 | Deferred Store
+  Tick 6064 | [ISR] IP 0047 | JMP    50 | ACC=1059
+  Tick 6068 | IP 0050 | IRET   0 | ACC=1
+  Tick 6070 | IP 0051 | LD     1024 | ACC=1059
+  Tick 6072 | IP 0052 | PUSH   0 | ACC=1059
+  Tick 6074 | IP 0053 | LDI    0 | ACC=0
+  Tick 6076 | IP 0054 | ST     1062 | Deferred Store
+  Tick 6078 | IP 0055 | POP    0 | ACC=1059 | [Parallel Flush]
+  Tick 6080 | IP 0056 | CMP    1062 | ACC=1059
+  Tick 6082 | IP 0057 | JZ     60 | ACC=1059
+  Tick 6084 | IP 0058 | LDI    0 | ACC=0
+  Tick 6086 | IP 0059 | JMP    61 | ACC=0
+  Tick 6088 | IP 0061 | CMP    1049 | ACC=0
+  Tick 6090 | IP 0062 | JZ     65 | ACC=0
+  Tick 6092 | IP 0065 | LDI    0 | ACC=0
+  Tick 6094 | IP 0066 | RET    0 | ACC=0
+  Tick 6096 | IP 0010 | ST     1046 | Deferred Store
+  Tick 6098 | IP 0011 | LD     1046 | ACC=0 | [Parallel Flush]
+  Tick 6100 | IP 0012 | HLT    0 | ACC=0
   --- Output ---
   What is your name?
-  Hello, A
+  Hello, Alice!
+
+...

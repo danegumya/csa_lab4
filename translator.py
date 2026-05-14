@@ -61,6 +61,15 @@ class LispParser:
                     "expr": self.build_ast(expr[2]),
                 }
 
+            if op == "read_ptr":
+                return {"type": "read_ptr", "addr": self.build_ast(expr[1])}
+            if op == "write_ptr":
+                return {
+                    "type": "write_ptr",
+                    "addr": self.build_ast(expr[1]),
+                    "val": self.build_ast(expr[2]),
+                }
+
             if op in ["+", "-", "*", "/", "mod", "=", "!=", "<", ">"]:
                 left_ast = self.build_ast(expr[1])
                 for i in range(2, len(expr)):
@@ -159,11 +168,35 @@ class LispCompiler:
             self.compile_expr(ast["expr"])
             self.emit(Opcode.ST, self.alloc_var(ast["name"]))
 
+        elif t == "read_ptr":
+            self.compile_expr(ast["addr"])
+            ptr = self.alloc_var(f"__ptr{self.tmp_count}")
+            self.tmp_count += 1
+            self.emit(Opcode.ST, ptr)
+            self.emit(Opcode.LD_PTR, ptr)
+
+        elif t == "write_ptr":
+            self.compile_expr(ast["addr"])
+            self.emit(Opcode.PUSH)
+            self.compile_expr(ast["val"])
+            val_tmp = self.alloc_var(f"__val{self.tmp_count}")
+            self.tmp_count += 1
+            self.emit(Opcode.ST, val_tmp)
+            self.emit(Opcode.POP)
+            ptr = self.alloc_var(f"__ptr{self.tmp_count}")
+            self.tmp_count += 1
+            self.emit(Opcode.ST, ptr)
+            self.emit(Opcode.LD, val_tmp)
+            self.emit(Opcode.ST_PTR, ptr)
+
         elif t == "binop":
             self.compile_expr(ast["left"])
             self.emit(Opcode.PUSH)
             self.compile_expr(ast["right"])
-            temp_right = self.alloc_var("__temp_right")
+
+            temp_right = self.alloc_var(f"__t_right_{self.tmp_count}")
+            self.tmp_count += 1
+
             self.emit(Opcode.ST, temp_right)
             self.emit(Opcode.POP)
 
@@ -209,10 +242,8 @@ class LispCompiler:
         elif t == "defun":
             self.current_func = ast["name"]
             self.functions[ast["name"]]["addr"] = len(self.code)
-
             for i, stmt in enumerate(ast["body"]):
                 self.compile_expr(stmt, is_tail=(i == len(ast["body"]) - 1))
-
             self.emit(Opcode.RET)
             self.current_func = None
 
@@ -285,20 +316,31 @@ class LispCompiler:
         self.emit(Opcode.JMP, 0)
         self.emit(Opcode.NOP)
 
+        has_isr = False
         for ast in asts:
+            if ast["type"] == "defirq":
+                has_isr = True
             if ast["type"] in ["defun", "defirq"]:
                 name = ast.get("name", "isr")
                 self.functions[name] = {"params": ast.get("params", []), "addr": None}
 
+        # 1. Компилируем основной код
         for ast in asts:
             if ast["type"] not in ["defun", "defirq"]:
                 self.compile_expr(ast)
         self.emit(Opcode.HLT)
 
+        # 2. ИСПРАВЛЕНИЕ: Безопасная заглушка IRET ставится ПОСЛЕ команды HLT
+        if not has_isr:
+            self.functions["isr"] = {"params": [], "addr": len(self.code)}
+            self.emit(Opcode.IRET)
+
+        # 3. Компилируем функции
         for ast in asts:
             if ast["type"] in ["defun", "defirq"]:
                 self.compile_expr(ast)
 
+        # 4. Линковка
         for idx, fname in self.pending_calls:
             if fname in self.functions:
                 self.code[idx] = (self.code[idx][0], self.functions[fname]["addr"])
@@ -319,6 +361,10 @@ class LispCompiler:
 
 
 if __name__ == "__main__":
+    if len(sys.argv) < 3:
+        print("Usage: translator.py <source.lisp> <output.bin> [debug.txt]")
+        sys.exit(1)
+
     with open(sys.argv[1], "r", encoding="utf-8") as src_file:
         source = src_file.read()
 

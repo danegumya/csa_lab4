@@ -2,9 +2,9 @@ source_code: |-
   (print_str "Hello World!")
 expected_log: |
   --- Simulation Trace ---
-  Tick    1 | IP 0000 | JMP    3 | ACC=0
-  Tick    2 | IP 0003 | LDI    1024 | ACC=1024
-  Tick    3 | IP 0004 | OUT    2 | ACC=1024
-  Tick    4 | IP 0005 | HLT    0 | ACC=1024
+  Tick    2 | IP 0000 | JMP    3 | ACC=0
+  Tick    4 | IP 0003 | LDI    1024 | ACC=1024
+  Tick    6 | IP 0004 | OUT    2 | ACC=1024
+  Tick    8 | IP 0005 | HLT    0 | ACC=1024
   --- Output ---
   Hello World!

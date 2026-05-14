@@ -23,94 +23,95 @@ source_code: |
 
 expected_log: |
   --- Simulation Trace ---
-  Tick    1 | IP 0000 | JMP    3 | ACC=0
-  Tick    2 | IP 0003 | LDI    0 | ACC=0
-  Tick    3 | IP 0004 | ST     1024 | Deferred Store
-  Tick    5 | IP 0005 | CALL   31 | ACC=0
-  Tick    6 | IP 0031 | LD     1024 | ACC=0
-  Tick    7 | IP 0032 | PUSH   0 | ACC=0
-  Tick    8 | IP 0033 | LDI    0 | ACC=0
-  Tick    9 | IP 0034 | ST     1027 | Deferred Store
-  Tick   10 | IP 0035 | POP    0 | ACC=0
+  Tick    2 | IP 0000 | JMP    3 | ACC=0
+  Tick    4 | IP 0003 | LDI    0 | ACC=0
+  Tick    6 | IP 0004 | ST     1024 | Deferred Store
+  Tick    9 | IP 0005 | CALL   31 | ACC=0
+  Tick   11 | [ISR] Hardware Trap: Push IP
+  Tick   12 | [ISR] Hardware Trap: Push ACC
+  Tick   13 | [ISR] Hardware Trap: Push Flags
+  Tick   14 | [ISR] Hardware Trap: JMP Vector
   Tick   16 | [ISR] IP 0001 | JMP    9 | ACC=0
-  Tick   17 | [ISR] IP 0009 | LDI    0 | ACC=0
-  Tick   18 | [ISR] IP 0010 | ST     1026 | Deferred Store
-  Tick   20 | [ISR] IP 0011 | IN     1 | ACC=65
-  Tick   21 | [ISR] IP 0012 | ST     1026 | Deferred Store
-  Tick   22 | [ISR] IP 0013 | LD     1026 | ACC=65 | [Parallel Flush]
-  Tick   23 | [ISR] IP 0014 | PUSH   0 | ACC=65
-  Tick   24 | [ISR] IP 0015 | LDI    0 | ACC=0
-  Tick   25 | [ISR] IP 0016 | ST     1027 | Deferred Store
-  Tick   26 | [ISR] IP 0017 | POP    0 | ACC=65
-  Tick   27 | [ISR] IP 0018 | CMP    1027 | ACC=65 | [Parallel Flush]
-  Tick   28 | [ISR] IP 0019 | JZ     22 | ACC=65
-  Tick   29 | [ISR] IP 0020 | LDI    0 | ACC=0
-  Tick   30 | [ISR] IP 0021 | JMP    23 | ACC=0
-  Tick   31 | [ISR] IP 0023 | CMP    1028 | ACC=0
-  Tick   32 | [ISR] IP 0024 | JZ     28 | ACC=0
-  Tick   33 | [ISR] IP 0028 | LD     1026 | ACC=65
-  Tick   34 | [ISR] IP 0029 | OUT    1 | ACC=65
-  Tick   35 | IP 0030 | IRET   0 | ACC=0
-  Tick   36 | IP 0036 | CMP    1027 | ACC=0
-  Tick   37 | IP 0037 | JZ     40 | ACC=0
-  Tick   38 | IP 0040 | LDI    1 | ACC=1
-  Tick   39 | IP 0041 | CMP    1028 | ACC=1
-  Tick   40 | IP 0042 | JZ     45 | ACC=1
-  Tick   41 | IP 0043 | JMP    31 | ACC=1
-  Tick   42 | IP 0031 | LD     1024 | ACC=0
-  Tick   43 | IP 0032 | PUSH   0 | ACC=0
-  Tick   44 | IP 0033 | LDI    0 | ACC=0
-  Tick   45 | IP 0034 | ST     1027 | Deferred Store
-  Tick   46 | IP 0035 | POP    0 | ACC=0
-  Tick   47 | IP 0036 | CMP    1027 | ACC=0 | [Parallel Flush]
-  Tick   48 | IP 0037 | JZ     40 | ACC=0
-  Tick   49 | IP 0040 | LDI    1 | ACC=1
-  Tick   50 | IP 0041 | CMP    1028 | ACC=1
-  Tick   55 | [IS
-  ... [TRUNCATED LOG] ...
-  SR] IP 0009 | LDI    0 | ACC=0
-  Tick  107 | [ISR] IP 0010 | ST     1026 | Deferred Store
-  Tick  109 | [ISR] IP 0011 | IN     1 | ACC=0
-  Tick  110 | [ISR] IP 0012 | ST     1026 | Deferred Store
-  Tick  111 | [ISR] IP 0013 | LD     1026 | ACC=0 | [Parallel Flush]
-  Tick  112 | [ISR] IP 0014 | PUSH   0 | ACC=0
-  Tick  113 | [ISR] IP 0015 | LDI    0 | ACC=0
-  Tick  114 | [ISR] IP 0016 | ST     1027 | Deferred Store
-  Tick  115 | [ISR] IP 0017 | POP    0 | ACC=0
-  Tick  116 | [ISR] IP 0018 | CMP    1027 | ACC=0 | [Parallel Flush]
-  Tick  117 | [ISR] IP 0019 | JZ     22 | ACC=0
-  Tick  118 | [ISR] IP 0022 | LDI    1 | ACC=1
-  Tick  119 | [ISR] IP 0023 | CMP    1028 | ACC=1
-  Tick  120 | [ISR] IP 0024 | JZ     28 | ACC=1
-  Tick  121 | [ISR] IP 0025 | LDI    1 | ACC=1
-  Tick  122 | [ISR] IP 0026 | ST     1024 | Deferred Store
-  Tick  124 | [ISR] IP 0027 | JMP    30 | ACC=1
-  Tick  125 | IP 0030 | IRET   0 | ACC=0
-  Tick  126 | IP 0033 | LDI    0 | ACC=0
-  Tick  127 | IP 0034 | ST     1027 | Deferred Store
-  Tick  128 | IP 0035 | POP    0 | ACC=0
-  Tick  129 | IP 0036 | CMP    1027 | ACC=0 | [Parallel Flush]
-  Tick  130 | IP 0037 | JZ     40 | ACC=0
-  Tick  131 | IP 0040 | LDI    1 | ACC=1
-  Tick  132 | IP 0041 | CMP    1028 | ACC=1
-  Tick  133 | IP 0042 | JZ     45 | ACC=1
-  Tick  134 | IP 0043 | JMP    31 | ACC=1
-  Tick  135 | IP 0031 | LD     1024 | ACC=1
-  Tick  136 | IP 0032 | PUSH   0 | ACC=1
-  Tick  137 | IP 0033 | LDI    0 | ACC=0
-  Tick  138 | IP 0034 | ST     1027 | Deferred Store
-  Tick  139 | IP 0035 | POP    0 | ACC=1
-  Tick  140 | IP 0036 | CMP    1027 | ACC=1 | [Parallel Flush]
-  Tick  141 | IP 0037 | JZ     40 | ACC=1
-  Tick  142 | IP 0038 | LDI    0 | ACC=0
-  Tick  143 | IP 0039 | JMP    41 | ACC=0
-  Tick  144 | IP 0041 | CMP    1028 | ACC=0
-  Tick  145 | IP 0042 | JZ     45 | ACC=0
-  Tick  146 | IP 0045 | LDI    0 | ACC=0
-  Tick  147 | IP 0046 | RET    0 | ACC=0
-  Tick  148 | IP 0006 | ST     1025 | Deferred Store
-  Tick  149 | IP 0007 | LD     1025 | ACC=0 | [Parallel Flush]
-  Tick  150 | IP 0008 | HLT    0 | ACC=0
+  Tick   18 | [ISR] IP 0009 | LDI    0 | ACC=0
+  Tick   20 | [ISR] IP 0010 | ST     1026 | Deferred Store
+  Tick   23 | [ISR] IP 0011 | IN     1 | ACC=65
+  Tick   25 | [ISR] IP 0012 | ST     1026 | Deferred Store
+  Tick   27 | [ISR] IP 0013 | LD     1026 | ACC=65 | [Parallel Flush]
+  Tick   29 | [ISR] IP 0014 | PUSH   0 | ACC=65
+  Tick   31 | [ISR] IP 0015 | LDI    0 | ACC=0
+  Tick   33 | [ISR] IP 0016 | ST     1027 | Deferred Store
+  Tick   35 | [ISR] IP 0017 | POP    0 | ACC=65 | [Parallel Flush]
+  Tick   37 | [ISR] IP 0018 | CMP    1027 | ACC=65
+  Tick   39 | [ISR] IP 0019 | JZ     22 | ACC=65
+  Tick   41 | [ISR] IP 0020 | LDI    0 | ACC=0
+  Tick   43 | [ISR] IP 0021 | JMP    23 | ACC=0
+  Tick   45 | [ISR] IP 0023 | CMP    1028 | ACC=0
+  Tick   47 | [ISR] IP 0024 | JZ     28 | ACC=0
+  Tick   49 | [ISR] IP 0028 | LD     1026 | ACC=65
+  Tick   51 | [ISR] IP 0029 | OUT    1 | ACC=65
+  Tick   55 | IP 0030 | IRET   0 | ACC=0
+  Tick   57 | [ISR] Hardware Trap: Push IP
+  Tick   58 | [ISR] Hardware Trap: Push ACC
+  Tick   59 | [ISR] Hardware Trap: Push Flags
+  Tick   60 | [ISR] Hardware Trap: JMP Vector
+  Tick   62 | [ISR] IP 0001 | JMP    9 | ACC=0
+  Tick   64 | [ISR] IP 0009 | LDI    0 | ACC=0
+  Tick   66 | [ISR] IP 0010 | ST     1026 | Deferred Store
+  Tick   69 | [ISR] IP 0011 | IN     1 | ACC=66
+  Tick   71 | [ISR] IP 0012 | ST     1026 | Deferred Store
+  Tick   73 | [ISR] IP 0013 | LD     1026 | ACC=66 | [Parallel Flush]
+  Tick   75 | [ISR] IP 0014 | PUSH   0 | ACC=66
+  Tick   77 | [ISR] IP 0015 | LDI    0 | ACC=0
+  Tick   79 | [ISR] IP 0016 | ST     1027 | Deferred Store
+  Tick   81 | [ISR] IP 0017 | POP    0 | ACC=66 | [Parallel Flush]
+  Tick   83 | [ISR] IP 0018 | CMP    1027 | ACC=66
+  Tick   85 | [ISR] IP 0019 | JZ     22 | ACC=66
+  Tick   87 | [ISR] IP 0020 | LDI    0 | ACC=0
+  Tick   89 | [ISR] IP 0021 | JMP    23 | ACC=0
+  Tick   91 | [ISR] IP 0023 | CMP    1028 | ACC=0
+  Tick   93 | [ISR] IP 0024 | JZ     28 | ACC=0
+  Tick   95 | [ISR] IP 0028 | LD     1026 | ACC=66
+  Tick   97 | [ISR] IP 0029 | OUT    1 | ACC=66
+  Tick  101 | IP 0030 | IRET   0 | ACC=0
+  Tick  103 | [ISR] Hardware Trap: Push IP
+  Tick  104 | [ISR] Hardware Trap: Push ACC
+  Tick  105 | [ISR] Hardware Trap: Push Flags
+  Tick  106 | [ISR] Hardware Trap: JMP Vector
+  Tick  108 | [ISR] IP 0001 | JMP    9 | ACC=0
+  Tick  110 | [ISR] IP 0009 | LDI    0 | ACC=0
+  Tick  112 | [ISR] IP 0010 | ST     1026 | Deferred Store
+  Tick  115 | [ISR] IP 0011 | IN     1 | ACC=0
+  Tick  117 | [ISR] IP 0012 | ST     1026 | Deferred Store
+  Tick  119 | [ISR] IP 0013 | LD     1026 | ACC=0 | [Parallel Flush]
+  Tick  121 | [ISR] IP 0014 | PUSH   0 | ACC=0
+  Tick  123 | [ISR] IP 0015 | LDI    0 | ACC=0
+  Tick  125 | [ISR] IP 0016 | ST     1027 | Deferred Store
+  Tick  127 | [ISR] IP 0017 | POP    0 | ACC=0 | [Parallel Flush]
+  Tick  129 | [ISR] IP 0018 | CMP    1027 | ACC=0
+  Tick  131 | [ISR] IP 0019 | JZ     22 | ACC=0
+  Tick  133 | [ISR] IP 0022 | LDI    1 | ACC=1
+  Tick  135 | [ISR] IP 0023 | CMP    1028 | ACC=1
+  Tick  137 | [ISR] IP 0024 | JZ     28 | ACC=1
+  Tick  139 | [ISR] IP 0025 | LDI    1 | ACC=1
+  Tick  141 | [ISR] IP 0026 | ST     1024 | Deferred Store
+  Tick  144 | [ISR] IP 0027 | JMP    30 | ACC=1
+  Tick  148 | IP 0030 | IRET   0 | ACC=0
+  Tick  150 | IP 0031 | LD     1024 | ACC=1
+  Tick  152 | IP 0032 | PUSH   0 | ACC=1
+  Tick  154 | IP 0033 | LDI    0 | ACC=0
+  Tick  156 | IP 0034 | ST     1029 | Deferred Store
+  Tick  158 | IP 0035 | POP    0 | ACC=1 | [Parallel Flush]
+  Tick  160 | IP 0036 | CMP    1029 | ACC=1
+  Tick  162 | IP 0037 | JZ     40 | ACC=1
+  Tick  164 | IP 0038 | LDI    0 | ACC=0
+  Tick  166 | IP 0039 | JMP    41 | ACC=0
+  Tick  168 | IP 0041 | CMP    1028 | ACC=0
+  Tick  170 | IP 0042 | JZ     45 | ACC=0
+  Tick  172 | IP 0045 | LDI    0 | ACC=0
+  Tick  174 | IP 0046 | RET    0 | ACC=0
+  Tick  176 | IP 0006 | ST     1025 | Deferred Store
+  Tick  178 | IP 0007 | LD     1025 | ACC=0 | [Parallel Flush]
+  Tick  180 | IP 0008 | HLT    0 | ACC=0
   --- Output ---
   6566
 

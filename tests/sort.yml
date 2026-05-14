@@ -1,0 +1,176 @@
+schedule: '[[100, "\u0005"], [200, "E"], [300, "B"], [400, "D"], [500, "A"], [600,
+  "C"]]'
+source_code: |
+  (defvar n 0)
+  (defvar arr_base 5000)
+
+  (defun wait_n ()
+      (setq n (in 1))
+      (if (= n 0)
+          (funcall wait_n)
+          0
+      )
+  )
+
+  ; Блокирующее чтение одного символа и запись его в массив по смещению i
+  (defun read_char (i)
+      (defvar char 0)
+      (setq char (in 1))
+      (if (= char 0)
+          (funcall read_char i)
+          (write_ptr (+ arr_base i) char)
+      )
+  )
+
+  (defun read_arr (i limit)
+      (if (< i limit)
+          (funcall read_char i)
+          0
+      )
+      (if (< i limit)
+          (funcall read_arr (+ i 1) limit)
+          0
+      )
+  )
+
+  (defun swap (j)
+      (defvar temp 0)
+      (setq temp (read_ptr (+ arr_base j)))
+      (write_ptr (+ arr_base j) (read_ptr (+ arr_base (+ j 1))))
+      (write_ptr (+ arr_base (+ j 1)) temp)
+  )
+
+  (defun bubble_inner (j limit)
+      (if (< j limit)
+          (if (> (read_ptr (+ arr_base j)) (read_ptr (+ arr_base (+ j 1))))
+              (funcall swap j)
+              0
+          )
+          0
+      )
+      (if (< j limit)
+          (funcall bubble_inner (+ j 1) limit)
+          0
+      )
+  )
+
+  (defun bubble_outer (limit)
+      (if (> limit 0)
+          (funcall bubble_inner 0 limit)
+          0
+      )
+      (if (> limit 0)
+          (funcall bubble_outer (- limit 1))
+          0
+      )
+  )
+
+  (defun print_arr (i limit)
+      (if (< i limit)
+          (print_char (read_ptr (+ arr_base i)))
+          0
+      )
+      (if (< i limit)
+          (funcall print_arr (+ i 1) limit)
+          0
+      )
+  )
+
+  ; ОСНОВНАЯ ПРОГРАММА
+  (funcall wait_n)
+  (funcall read_arr 0 n)
+  (funcall bubble_outer (- n 1))
+  (funcall print_arr 0 n)
+
+expected_log: |
+  --- Simulation Trace ---
+  Tick    2 | IP 0000 | JMP    3 | ACC=0
+  Tick    4 | IP 0003 | LDI    0 | ACC=0
+  Tick    6 | IP 0004 | ST     1024 | Deferred Store
+  Tick    8 | IP 0005 | LDI    5000 | ACC=5000 | [Parallel Flush]
+  Tick   10 | IP 0006 | ST     1025 | Deferred Store
+  Tick   13 | IP 0007 | CALL   66 | ACC=5000
+  Tick   15 | IP 0066 | IN     1 | ACC=0
+  Tick   17 | IP 0067 | ST     1024 | Deferred Store
+  Tick   19 | IP 0068 | LD     1024 | ACC=0 | [Parallel Flush]
+  Tick   21 | IP 0069 | PUSH   0 | ACC=0
+  Tick   23 | IP 0070 | LDI    0 | ACC=0
+  Tick   25 | IP 0071 | ST     1038 | Deferred Store
+  Tick   27 | IP 0072 | POP    0 | ACC=0 | [Parallel Flush]
+  Tick   29 | IP 0073 | CMP    1038 | ACC=0
+  Tick   31 | IP 0074 | JZ     77 | ACC=0
+  Tick   33 | IP 0077 | LDI    1 | ACC=1
+  Tick   35 | IP 0078 | CMP    1039 | ACC=1
+  Tick   37 | IP 0079 | JZ     82 | ACC=1
+  Tick   39 | IP 0080 | JMP    66 | ACC=1
+  Tick   41 | IP 0066 | IN     1 | ACC=0
+  Tick   43 | IP 0067 | ST     1024 | Deferred Store
+  Tick   45 | IP 0068 | LD     1024 | ACC=0 | [Parallel Flush]
+  Tick   47 | IP 0069 | PUSH   0 | ACC=0
+  Tick   49 | IP 0070 | LDI    0 | ACC=0
+  Tick   51 | IP 0071 | ST     1038 | Deferred Store
+  Tick   53 | IP 0072 | POP    0 | ACC=0 | [Parallel Flush]
+  Tick   55 | IP 0073 | CMP    1038 | ACC=0
+  Tick   57 | IP 0074 | JZ     77 | ACC=0
+  Tick   59 | IP 0077 | LDI    1 | ACC=1
+  Tick   61 | IP 0078 | CMP    1039 | ACC=1
+  Tick   63 | IP 0079 | JZ     82 | ACC=1
+  Tick   65 | IP 0080 | JMP    66 | ACC=1
+  Tick   67 | IP 0066 | IN     1 | ACC=0
+  Tick   69 | IP 0067 | ST     1024 | Deferred Store
+  Tick   71 | IP 0068 | LD     1024 | ACC=0 | [Parallel Flush]
+  Tick   73 | IP 0069 | PUSH   0 | ACC=0
+  Tick   75 | IP 0070 | LDI    0 | ACC=0
+  Tick   77 | IP 0071 | ST     1038 | Deferred Store
+  Tick   79 | IP 0072 | POP    0 | ACC=0 | [Parallel Flush]
+  Tick   81 | IP 0073 | CMP    1038 | ACC=0
+  Tick   83 | IP 0074 | JZ     77 | ACC=0
+  Tick   85 | IP 0077 | LDI    1 | ACC=1
+  Tick   87 | IP 0078 | CMP    1039 | ACC=1
+  Tick   89 | IP 0079 | JZ 
+  ... [TRUNCATED LOG] ...
+  ed Store
+  Tick 4532 | IP 0413 | POP    0 | ACC=4 | [Parallel Flush]
+  Tick 4534 | IP 0414 | ADD    1091 | ACC=5
+  Tick 4536 | IP 0415 | ST     1092 | Deferred Store
+  Tick 4538 | IP 0416 | LD     1030 | ACC=5 | [Parallel Flush]
+  Tick 4540 | IP 0417 | ST     1093 | Deferred Store
+  Tick 4542 | IP 0418 | LD     1092 | ACC=5 | [Parallel Flush]
+  Tick 4544 | IP 0419 | ST     1029 | Deferred Store
+  Tick 4546 | IP 0420 | LD     1093 | ACC=5 | [Parallel Flush]
+  Tick 4548 | IP 0421 | ST     1030 | Deferred Store
+  Tick 4551 | IP 0422 | JMP    374 | ACC=5
+  Tick 4553 | IP 0374 | LD     1029 | ACC=5
+  Tick 4555 | IP 0375 | PUSH   0 | ACC=5
+  Tick 4557 | IP 0376 | LD     1030 | ACC=5
+  Tick 4559 | IP 0377 | ST     1087 | Deferred Store
+  Tick 4561 | IP 0378 | POP    0 | ACC=5 | [Parallel Flush]
+  Tick 4563 | IP 0379 | CMP    1087 | ACC=5
+  Tick 4565 | IP 0380 | JLT    383 | ACC=5
+  Tick 4567 | IP 0381 | LDI    0 | ACC=0
+  Tick 4569 | IP 0382 | JMP    384 | ACC=0
+  Tick 4571 | IP 0384 | CMP    1039 | ACC=0
+  Tick 4573 | IP 0385 | JZ     396 | ACC=0
+  Tick 4575 | IP 0396 | LDI    0 | ACC=0
+  Tick 4577 | IP 0397 | LD     1029 | ACC=5
+  Tick 4579 | IP 0398 | PUSH   0 | ACC=5
+  Tick 4581 | IP 0399 | LD     1030 | ACC=5
+  Tick 4583 | IP 0400 | ST     1090 | Deferred Store
+  Tick 4585 | IP 0401 | POP    0 | ACC=5 | [Parallel Flush]
+  Tick 4587 | IP 0402 | CMP    1090 | ACC=5
+  Tick 4589 | IP 0403 | JLT    406 | ACC=5
+  Tick 4591 | IP 0404 | LDI    0 | ACC=0
+  Tick 4593 | IP 0405 | JMP    407 | ACC=0
+  Tick 4595 | IP 0407 | CMP    1039 | ACC=0
+  Tick 4597 | IP 0408 | JZ     424 | ACC=0
+  Tick 4599 | IP 0424 | LDI    0 | ACC=0
+  Tick 4601 | IP 0425 | RET    0 | ACC=0
+  Tick 4603 | IP 0058 | ST     1037 | Deferred Store
+  Tick 4605 | IP 0059 | POP    0 | ACC=0 | [Parallel Flush]
+  Tick 4607 | IP 0060 | ST     1030 | Deferred Store
+  Tick 4609 | IP 0061 | POP    0 | ACC=0 | [Parallel Flush]
+  Tick 4611 | IP 0062 | ST     1029 | Deferred Store
+  Tick 4613 | IP 0063 | LD     1037 | ACC=0 | [Parallel Flush]
+  Tick 4615 | IP 0064 | HLT    0 | ACC=0
+  --- Output ---
+  ABCDE
