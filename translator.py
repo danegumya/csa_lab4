@@ -361,9 +361,6 @@ class LispCompiler:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print("Usage: translator.py <source.lisp> <output.bin> [debug.txt]")
-        sys.exit(1)
 
     with open(sys.argv[1], "r", encoding="utf-8") as src_file:
         source = src_file.read()
