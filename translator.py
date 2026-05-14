@@ -324,23 +324,19 @@ class LispCompiler:
                 name = ast.get("name", "isr")
                 self.functions[name] = {"params": ast.get("params", []), "addr": None}
 
-        # 1. Компилируем основной код
         for ast in asts:
             if ast["type"] not in ["defun", "defirq"]:
                 self.compile_expr(ast)
         self.emit(Opcode.HLT)
 
-        # 2. ИСПРАВЛЕНИЕ: Безопасная заглушка IRET ставится ПОСЛЕ команды HLT
         if not has_isr:
             self.functions["isr"] = {"params": [], "addr": len(self.code)}
             self.emit(Opcode.IRET)
 
-        # 3. Компилируем функции
         for ast in asts:
             if ast["type"] in ["defun", "defirq"]:
                 self.compile_expr(ast)
 
-        # 4. Линковка
         for idx, fname in self.pending_calls:
             if fname in self.functions:
                 self.code[idx] = (self.code[idx][0], self.functions[fname]["addr"])

@@ -9,7 +9,6 @@ def to_signed32(x):
     return x if x < 0x80000000 else x - 0x100000000
 
 
-# Состояния Конечного Автомата (FSM)
 class State(Enum):
     FETCH = "FETCH"
     EXECUTE = "EXECUTE"
@@ -48,14 +47,12 @@ class ControlUnit:
         self.next_state = State.FETCH
         self.delay_ticks = 0
 
-        # Аппаратный FIFO буфер для порта
         self.port_buffer = []
         self.irq_line = False
         self.interrupt_enabled = True
         self.output_buffer = []
 
     def check_external_devices(self):
-        # Если пришло время по расписанию - кладем символ в аппаратный буфер
         while self.schedule and self.schedule[0][0] <= self.ticks:
             _, char = self.schedule.pop(0)
             self.port_buffer.append(char)
@@ -68,9 +65,6 @@ class ControlUnit:
         if self.state == State.HALTED:
             return
 
-        # ==================================
-        # ФАЗА ВЫБОРКИ КОМАНДЫ И ПРЕРЫВАНИЙ
-        # ==================================
         if self.state == State.FETCH:
             # 1. ПЕРЕХВАТ (TRAP)
             if self.irq_line and self.interrupt_enabled:
@@ -81,7 +75,6 @@ class ControlUnit:
                     self.state = State.TRAP_1
                 return
 
-            # 2. НОРМАЛЬНАЯ ВЫБОРКА
             self.current_ip = self.ip
             raw_instr = self.dp.memory[self.ip]
 
@@ -95,9 +88,6 @@ class ControlUnit:
             self.delay_ticks = 0
             return
 
-        # ==================================
-        # ФАЗА ИСПОЛНЕНИЯ
-        # ==================================
         elif self.state == State.EXECUTE:
             parallel_flush_msg = ""
 
@@ -239,9 +229,6 @@ class ControlUnit:
             if self.state != State.HALTED:
                 self.state = State.FETCH
 
-        # ==================================
-        # СТАТУСЫ АППАРАТНЫХ ЗАДЕРЖЕК
-        # ==================================
         elif self.state == State.FLUSH_STALL:
             self.dp.memory[self.dp.shadow_addr] = self.dp.shadow_acc
             self.dp.shadow_active = False
@@ -268,7 +255,7 @@ class ControlUnit:
 
         elif self.state == State.TRAP_4:
             self.interrupt_enabled = False
-            self.irq_line = False  # Сбрасываем сигнал прерывания
+            self.irq_line = False
             self.ip = 1
             self.state = State.FETCH
             print(f"Tick {self.ticks:4} | [ISR] Hardware Trap: JMP Vector")
