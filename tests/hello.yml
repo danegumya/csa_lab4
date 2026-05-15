@@ -2,9 +2,111 @@ source_code: |-
   (print_str "Hello World!")
 expected_log: |
   --- Simulation Trace ---
+  Tick    1 | IP 0000 | FETCH
   Tick    2 | IP 0000 | JMP    3 | ACC=0
+  Tick    3 | IP 0003 | FETCH
   Tick    4 | IP 0003 | LDI    1024 | ACC=1024
-  Tick    6 | IP 0004 | OUT    2 | ACC=1024
-  Tick    8 | IP 0005 | HLT    0 | ACC=1024
+  Tick    5 | IP 0004 | FETCH
+  Tick    6 | IP 0004 | ST     1037 | Deferred Store
+  Tick    7 | IP 0005 | FETCH
+  Tick    8 | IP 0005 | STALL (Hazard Unit Flush)
+  Tick    9 | IP 0005 | LD_PTR 1037 | Ptr Read
+  Tick   10 | IP 0005 | LD_PTR 1037 | ACC=12
+  Tick   11 | IP 0006 | FETCH
+  Tick   12 | IP 0006 | ST     1038 | Deferred Store
+  Tick   13 | IP 0007 | FETCH
+  Tick   14 | IP 0007 | LDI    1 | ACC=1 | [Parallel Flush]
+  Tick   15 | IP 0008 | FETCH
+  Tick   16 | IP 0008 | ST     1039 | Deferred Store
+  Tick   17 | IP 0009 | FETCH
+  Tick   18 | IP 0009 | LD     1039 | ACC=1 | [Parallel Flush]
+  Tick   19 | IP 0010 | FETCH
+  Tick   20 | IP 0010 | PUSH   0 | ACC=1
+  Tick   21 | IP 0011 | FETCH
+  Tick   22 | IP 0011 | LD     1038 | ACC=12
+  Tick   23 | IP 0012 | FETCH
+  Tick   24 | IP 0012 | ST     1040 | Deferred Store
+  Tick   25 | IP 0013 | FETCH
+  Tick   26 | IP 0013 | POP    0 | ACC=1 | [Parallel Flush]
+  Tick   27 | IP 0014 | FETCH
+  Tick   28 | IP 0014 | CMP    1040 | ACC=1
+  Tick   29 | IP 0015 | FETCH
+  Tick   30 | IP 0015 | JGT    33 | ACC=1
+  Tick   31 | IP 0016 | FETCH
+  Tick   32 | IP 0016 | LD     1037 | ACC=1024
+  Tick   33 | IP 0017 | FETCH
+  Tick   34 | IP 0017 | PUSH   0 | ACC=1024
+  Tick   35 | IP 0018 | FETCH
+  Tick   36 | IP 0018 | LD     1039 | ACC=1
+  Tick   37 | IP 0019 | FETCH
+  Tick   38 | IP 0019 | ST     1041 | Deferred Store
+  Tick   39 | IP 0020 | FETCH
+  Tick   40 | IP 0020 | POP    0 | ACC=1024 | [Parallel Flush]
+  Tick   41 | IP 0021 | FETCH
+  Tick   42 | IP 0021 | ADD    1041 | ACC=1025
+  Tick   43 | IP 0022 | FETCH
+  Tick   44 | IP 0022 | ST     1043 | Deferred Store
+  Tick   45 | IP 0023 | FETCH
+  Tick   46 | IP 0023 | STALL (Hazard Unit Flush)
+  Tick   47 | IP 0023 | LD_PTR 1043 | Ptr Read
+  Tick   48 | IP 0023 | LD_PTR 1043 | ACC=72
+  Tick   49 | IP 0024 | FETCH
+  Tick   50 | IP 0024 | OUT    3 | ACC=72
+  Tick   51 | IP 0025 | FETCH
+  Tick   52 | IP 0025 | LD 
+  ... [TRUNCATED LOG] ...
+   | IP 0017 | FETCH
+  Tick  595 | IP 0017 | PUSH   0 | ACC=1024
+  Tick  596 | IP 0018 | FETCH
+  Tick  597 | IP 0018 | LD     1039 | ACC=12
+  Tick  598 | IP 0019 | FETCH
+  Tick  599 | IP 0019 | ST     1041 | Deferred Store
+  Tick  600 | IP 0020 | FETCH
+  Tick  601 | IP 0020 | POP    0 | ACC=1024 | [Parallel Flush]
+  Tick  602 | IP 0021 | FETCH
+  Tick  603 | IP 0021 | ADD    1041 | ACC=1036
+  Tick  604 | IP 0022 | FETCH
+  Tick  605 | IP 0022 | ST     1043 | Deferred Store
+  Tick  606 | IP 0023 | FETCH
+  Tick  607 | IP 0023 | STALL (Hazard Unit Flush)
+  Tick  608 | IP 0023 | LD_PTR 1043 | Ptr Read
+  Tick  609 | IP 0023 | LD_PTR 1043 | ACC=33
+  Tick  610 | IP 0024 | FETCH
+  Tick  611 | IP 0024 | OUT    3 | ACC=33
+  Tick  612 | IP 0025 | FETCH
+  Tick  613 | IP 0025 | LD     1039 | ACC=12
+  Tick  614 | IP 0026 | FETCH
+  Tick  615 | IP 0026 | PUSH   0 | ACC=12
+  Tick  616 | IP 0027 | FETCH
+  Tick  617 | IP 0027 | LDI    1 | ACC=1
+  Tick  618 | IP 0028 | FETCH
+  Tick  619 | IP 0028 | ST     1042 | Deferred Store
+  Tick  620 | IP 0029 | FETCH
+  Tick  621 | IP 0029 | POP    0 | ACC=12 | [Parallel Flush]
+  Tick  622 | IP 0030 | FETCH
+  Tick  623 | IP 0030 | ADD    1042 | ACC=13
+  Tick  624 | IP 0031 | FETCH
+  Tick  625 | IP 0031 | ST     1039 | Deferred Store
+  Tick  626 | IP 0032 | FETCH
+  Tick  627 | IP 0032 | STALL (Hazard Unit Flush)
+  Tick  628 | IP 0032 | JMP    9 | ACC=13
+  Tick  629 | IP 0009 | FETCH
+  Tick  630 | IP 0009 | LD     1039 | ACC=13
+  Tick  631 | IP 0010 | FETCH
+  Tick  632 | IP 0010 | PUSH   0 | ACC=13
+  Tick  633 | IP 0011 | FETCH
+  Tick  634 | IP 0011 | LD     1038 | ACC=12
+  Tick  635 | IP 0012 | FETCH
+  Tick  636 | IP 0012 | ST     1040 | Deferred Store
+  Tick  637 | IP 0013 | FETCH
+  Tick  638 | IP 0013 | POP    0 | ACC=13 | [Parallel Flush]
+  Tick  639 | IP 0014 | FETCH
+  Tick  640 | IP 0014 | CMP    1040 | ACC=13
+  Tick  641 | IP 0015 | FETCH
+  Tick  642 | IP 0015 | JGT    33 | ACC=13
+  Tick  643 | IP 0033 | FETCH
+  Tick  644 | IP 0033 | LDI    1 | ACC=1
+  Tick  645 | IP 0034 | FETCH
+  Tick  646 | IP 0034 | HLT    0 | ACC=1
   --- Output ---
   Hello World!

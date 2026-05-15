@@ -15,45 +15,113 @@ source_code: |
 
 expected_log: |
   --- Simulation Trace ---
+  Tick    1 | IP 0000 | FETCH
   Tick    2 | IP 0000 | JMP    3 | ACC=0
+  Tick    3 | IP 0003 | FETCH
   Tick    4 | IP 0003 | LDI    1 | ACC=1
+  Tick    5 | IP 0004 | FETCH
   Tick    6 | IP 0004 | ST     1024 | Deferred Store
+  Tick    7 | IP 0005 | FETCH
   Tick    8 | IP 0005 | LD     1024 | ACC=1 | [Parallel Flush]
+  Tick    9 | IP 0006 | FETCH
   Tick   10 | IP 0006 | CMP    1025 | ACC=1
+  Tick   11 | IP 0007 | FETCH
   Tick   12 | IP 0007 | JZ     10 | ACC=1
+  Tick   13 | IP 0008 | FETCH
   Tick   14 | IP 0008 | LDI    1026 | ACC=1026
+  Tick   15 | IP 0009 | FETCH
   Tick   16 | IP 0009 | JMP    11 | ACC=1026
-  Tick   18 | IP 0011 | OUT    2 | ACC=1026
-  Tick   20 | IP 0012 | LDI    0 | ACC=0
-  Tick   22 | IP 0013 | ST     1053 | Deferred Store
-  Tick   24 | IP 0014 | LDI    13 | ACC=13 | [Parallel Flush]
-  Tick   26 | IP 0015 | ST     1053 | Deferred Store
-  Tick   29 | IP 0016 | OUT    1 | ACC=13
-  Tick   31 | IP 0017 | LDI    1054 | ACC=1054
-  Tick   33 | IP 0018 | OUT    2 | ACC=1054
-  Tick   35 | IP 0019 | LDI    1 | ACC=1
-  Tick   37 | IP 0020 | PUSH   0 | ACC=1
-  Tick   39 | IP 0021 | LDI    2 | ACC=2
-  Tick   41 | IP 0022 | ST     1056 | Deferred Store
-  Tick   43 | IP 0023 | POP    0 | ACC=1 | [Parallel Flush]
-  Tick   45 | IP 0024 | ADD    1056 | ACC=3
-  Tick   47 | IP 0025 | PUSH   0 | ACC=3
-  Tick   49 | IP 0026 | LDI    3 | ACC=3
-  Tick   51 | IP 0027 | ST     1057 | Deferred Store
-  Tick   53 | IP 0028 | POP    0 | ACC=3 | [Parallel Flush]
-  Tick   55 | IP 0029 | ADD    1057 | ACC=6
-  Tick   57 | IP 0030 | PUSH   0 | ACC=6
-  Tick   59 | IP 0031 | LDI    4 | ACC=4
-  Tick   61 | IP 0032 | ST     1058 | Deferred Store
-  Tick   63 | IP 0033 | POP    0 | ACC=6 | [Parallel Flush]
-  Tick   65 | IP 0034 | ADD    1058 | ACC=10
-  Tick   67 | IP 0035 | PUSH   0 | ACC=10
-  Tick   69 | IP 0036 | LDI    5 | ACC=5
-  Tick   71 | IP 0037 | ST     1059 | Deferred Store
-  Tick   73 | IP 0038 | POP    0 | ACC=10 | [Parallel Flush]
-  Tick   75 | IP 0039 | ADD    1059 | ACC=15
-  Tick   77 | IP 0040 | OUT    1 | ACC=15
-  Tick   79 | IP 0041 | HLT    0 | ACC=15
+  Tick   17 | IP 0011 | FETCH
+  Tick   18 | IP 0011 | ST     1053 | Deferred Store
+  Tick   19 | IP 0012 | FETCH
+  Tick   20 | IP 0012 | STALL (Hazard Unit Flush)
+  Tick   21 | IP 0012 | LD_PTR 1053 | Ptr Read
+  Tick   22 | IP 0012 | LD_PTR 1053 | ACC=12
+  Tick   23 | IP 0013 | FETCH
+  Tick   24 | IP 0013 | ST     1054 | Deferred Store
+  Tick   25 | IP 0014 | FETCH
+  Tick   26 | IP 0014 | LDI    1 | ACC=1 | [Parallel Flush]
+  Tick   27 | IP 0015 | FETCH
+  Tick   28 | IP 0015 | ST     1055 | Deferred Store
+  Tick   29 | IP 0016 | FETCH
+  Tick   30 | IP 0016 | LD     1055 | ACC=1 | [Parallel Flush]
+  Tick   31 | IP 0017 | FETCH
+  Tick   32 | IP 0017 | PUSH   0 | ACC=1
+  Tick   33 | IP 0018 | FETCH
+  Tick   34 | IP 0018 | LD     1054 | ACC=12
+  Tick   35 | IP 0019 | FETCH
+  Tick   36 | IP 0019 | ST     1056 | Deferred Store
+  Tick   37 | IP 0020 | FETCH
+  Tick   38 | IP 0020 | POP    0 | ACC=1 | [Parallel Flush]
+  Tick   39 | IP 0021 | FETCH
+  Tick   40 | IP 0021 | CMP    1056 | ACC=1
+  Tick   41 | IP 0022 | FETCH
+  Tick   42 | IP 0022 | JGT    40 | ACC=1
+  Tick   43 | IP 0023 | FETCH
+  Tick   44 | IP 0023 | LD     1053 | ACC=1026
+  Tick   45 | IP 0024 | FETCH
+  Tick   46 | IP 0024 | PUSH   0 | ACC=1026
+  Tick   47 | IP 0025 | FETCH
+  Tick   48 | IP 0025 | LD     1055 | ACC=1
+  Tick   49 | IP 0026 | FETCH
+  Tick   50 | IP 0026 | ST     1057 | Deferred Store
+  Tick   51 | IP 0027 | FETCH
+  Tick   52 | IP 0027 | POP    0 | ACC=1026 | [Parallel 
+  ... [TRUNCATED LOG] ...
+  41 | IP 0056 | FETCH
+  Tick  742 | IP 0056 | POP    0 | ACC=2 | [Parallel Flush]
+  Tick  743 | IP 0057 | FETCH
+  Tick  744 | IP 0057 | CMP    1066 | ACC=2
+  Tick  745 | IP 0058 | FETCH
+  Tick  746 | IP 0058 | JGT    76 | ACC=2
+  Tick  747 | IP 0076 | FETCH
+  Tick  748 | IP 0076 | LDI    1 | ACC=1
+  Tick  749 | IP 0077 | FETCH
+  Tick  750 | IP 0077 | LDI    1 | ACC=1
+  Tick  751 | IP 0078 | FETCH
+  Tick  752 | IP 0078 | PUSH   0 | ACC=1
+  Tick  753 | IP 0079 | FETCH
+  Tick  754 | IP 0079 | LDI    2 | ACC=2
+  Tick  755 | IP 0080 | FETCH
+  Tick  756 | IP 0080 | ST     1070 | Deferred Store
+  Tick  757 | IP 0081 | FETCH
+  Tick  758 | IP 0081 | POP    0 | ACC=1 | [Parallel Flush]
+  Tick  759 | IP 0082 | FETCH
+  Tick  760 | IP 0082 | ADD    1070 | ACC=3
+  Tick  761 | IP 0083 | FETCH
+  Tick  762 | IP 0083 | PUSH   0 | ACC=3
+  Tick  763 | IP 0084 | FETCH
+  Tick  764 | IP 0084 | LDI    3 | ACC=3
+  Tick  765 | IP 0085 | FETCH
+  Tick  766 | IP 0085 | ST     1071 | Deferred Store
+  Tick  767 | IP 0086 | FETCH
+  Tick  768 | IP 0086 | POP    0 | ACC=3 | [Parallel Flush]
+  Tick  769 | IP 0087 | FETCH
+  Tick  770 | IP 0087 | ADD    1071 | ACC=6
+  Tick  771 | IP 0088 | FETCH
+  Tick  772 | IP 0088 | PUSH   0 | ACC=6
+  Tick  773 | IP 0089 | FETCH
+  Tick  774 | IP 0089 | LDI    4 | ACC=4
+  Tick  775 | IP 0090 | FETCH
+  Tick  776 | IP 0090 | ST     1072 | Deferred Store
+  Tick  777 | IP 0091 | FETCH
+  Tick  778 | IP 0091 | POP    0 | ACC=6 | [Parallel Flush]
+  Tick  779 | IP 0092 | FETCH
+  Tick  780 | IP 0092 | ADD    1072 | ACC=10
+  Tick  781 | IP 0093 | FETCH
+  Tick  782 | IP 0093 | PUSH   0 | ACC=10
+  Tick  783 | IP 0094 | FETCH
+  Tick  784 | IP 0094 | LDI    5 | ACC=5
+  Tick  785 | IP 0095 | FETCH
+  Tick  786 | IP 0095 | ST     1073 | Deferred Store
+  Tick  787 | IP 0096 | FETCH
+  Tick  788 | IP 0096 | POP    0 | ACC=10 | [Parallel Flush]
+  Tick  789 | IP 0097 | FETCH
+  Tick  790 | IP 0097 | ADD    1073 | ACC=15
+  Tick  791 | IP 0098 | FETCH
+  Tick  792 | IP 0098 | OUT    1 | ACC=15
+  Tick  793 | IP 0099 | FETCH
+  Tick  794 | IP 0099 | HLT    0 | ACC=15
   --- Output ---
   True Branch
   13

@@ -13,10 +13,8 @@ class LispParser:
     def read_from_tokens(self):
         if self.pos >= len(self.tokens):
             raise EOFError("Unexpected EOF")
-
         token = self.tokens[self.pos]
         self.pos += 1
-
         if token == "(":
             lst = []
             while self.pos < len(self.tokens) and self.tokens[self.pos] != ")":
@@ -42,12 +40,10 @@ class LispParser:
             return expr
         if isinstance(expr, str):
             return {"type": "var", "name": expr}
-
         if isinstance(expr, list):
             if not expr:
                 return {"type": "empty_list"}
             op = expr[0]
-
             if op == "defvar":
                 return {
                     "type": "defvar",
@@ -60,7 +56,6 @@ class LispParser:
                     "name": expr[1],
                     "expr": self.build_ast(expr[2]),
                 }
-
             if op == "read_ptr":
                 return {"type": "read_ptr", "addr": self.build_ast(expr[1])}
             if op == "write_ptr":
@@ -69,7 +64,6 @@ class LispParser:
                     "addr": self.build_ast(expr[1]),
                     "val": self.build_ast(expr[2]),
                 }
-
             if op in ["+", "-", "*", "/", "mod", "=", "!=", "<", ">"]:
                 left_ast = self.build_ast(expr[1])
                 for i in range(2, len(expr)):
@@ -81,7 +75,6 @@ class LispParser:
                         "right": right_ast,
                     }
                 return left_ast
-
             if op == "if":
                 return {
                     "type": "if",
@@ -102,14 +95,12 @@ class LispParser:
                     "name": expr[1],
                     "args": [self.build_ast(a) for a in expr[2:]],
                 }
-
             if op == "print":
                 return {"type": "print", "expr": self.build_ast(expr[1])}
             if op == "print_str":
                 return {"type": "print_str", "expr": self.build_ast(expr[1])}
             if op == "print_char":
                 return {"type": "print_char", "expr": self.build_ast(expr[1])}
-
             if op == "in":
                 return {"type": "in", "port": expr[1]}
             if op == "defirq":
@@ -167,14 +158,12 @@ class LispCompiler:
         elif t == "setq":
             self.compile_expr(ast["expr"])
             self.emit(Opcode.ST, self.alloc_var(ast["name"]))
-
         elif t == "read_ptr":
             self.compile_expr(ast["addr"])
             ptr = self.alloc_var(f"__ptr{self.tmp_count}")
             self.tmp_count += 1
             self.emit(Opcode.ST, ptr)
             self.emit(Opcode.LD_PTR, ptr)
-
         elif t == "write_ptr":
             self.compile_expr(ast["addr"])
             self.emit(Opcode.PUSH)
@@ -188,18 +177,14 @@ class LispCompiler:
             self.emit(Opcode.ST, ptr)
             self.emit(Opcode.LD, val_tmp)
             self.emit(Opcode.ST_PTR, ptr)
-
         elif t == "binop":
             self.compile_expr(ast["left"])
             self.emit(Opcode.PUSH)
             self.compile_expr(ast["right"])
-
             temp_right = self.alloc_var(f"__t_right_{self.tmp_count}")
             self.tmp_count += 1
-
             self.emit(Opcode.ST, temp_right)
             self.emit(Opcode.POP)
-
             op = ast["op"]
             if op == "+":
                 self.emit(Opcode.ADD, temp_right)
@@ -225,20 +210,16 @@ class LispCompiler:
                 self.code[idx_j] = (jump_op, len(self.code))
                 self.emit(Opcode.LDI, 1)
                 self.code[idx_end] = (Opcode.JMP, len(self.code))
-
         elif t == "if":
             self.compile_expr(ast["cond"])
             self.emit(Opcode.CMP, self.alloc_var("__zero"))
             idx_jz = self.emit(Opcode.JZ, 0)
-
             self.compile_expr(ast["then"], is_tail=is_tail)
             idx_jmp = self.emit(Opcode.JMP, 0)
             self.code[idx_jz] = (Opcode.JZ, len(self.code))
-
             if ast["else"]:
                 self.compile_expr(ast["else"], is_tail=is_tail)
             self.code[idx_jmp] = (Opcode.JMP, len(self.code))
-
         elif t == "defun":
             self.current_func = ast["name"]
             self.functions[ast["name"]]["addr"] = len(self.code)
@@ -246,13 +227,11 @@ class LispCompiler:
                 self.compile_expr(stmt, is_tail=(i == len(ast["body"]) - 1))
             self.emit(Opcode.RET)
             self.current_func = None
-
         elif t == "funcall":
             fname = ast["name"]
             target_params = (
                 self.functions[fname]["params"] if fname in self.functions else []
             )
-
             t_args = []
             for arg in ast["args"]:
                 self.compile_expr(arg)
@@ -260,7 +239,6 @@ class LispCompiler:
                 self.tmp_count += 1
                 self.emit(Opcode.ST, t_var)
                 t_args.append(t_var)
-
             if is_tail and fname == self.current_func:
                 for t_var, p in zip(t_args, target_params):
                     self.emit(Opcode.LD, t_var)
@@ -270,11 +248,9 @@ class LispCompiler:
                 for p in target_params:
                     self.emit(Opcode.LD, self.alloc_var(p))
                     self.emit(Opcode.PUSH)
-
                 for t_var, p in zip(t_args, target_params):
                     self.emit(Opcode.LD, t_var)
                     self.emit(Opcode.ST, self.alloc_var(p))
-
                 if (
                     fname in self.functions
                     and self.functions[fname]["addr"] is not None
@@ -283,7 +259,6 @@ class LispCompiler:
                 else:
                     idx = self.emit(Opcode.CALL, 0)
                     self.pending_calls.append((idx, fname))
-
                 ret_val = self.alloc_var(f"__ret{self.tmp_count}")
                 self.tmp_count += 1
                 self.emit(Opcode.ST, ret_val)
@@ -291,16 +266,60 @@ class LispCompiler:
                     self.emit(Opcode.POP)
                     self.emit(Opcode.ST, self.alloc_var(p))
                 self.emit(Opcode.LD, ret_val)
-
         elif t == "print":
             self.compile_expr(ast["expr"])
             self.emit(Opcode.OUT, 1)
-        elif t == "print_str":
-            self.compile_expr(ast["expr"])
-            self.emit(Opcode.OUT, 2)
         elif t == "print_char":
             self.compile_expr(ast["expr"])
             self.emit(Opcode.OUT, 3)
+        elif t == "print_str":
+            self.compile_expr(ast["expr"])
+            ptr = self.alloc_var(f"__s_p_{self.tmp_count}")
+            length = self.alloc_var(f"__s_l_{self.tmp_count}")
+            idx = self.alloc_var(f"__s_i_{self.tmp_count}")
+            t_cmp = self.alloc_var(f"__s_c_{self.tmp_count}")
+            t_add = self.alloc_var(f"__s_a_{self.tmp_count}")
+            t_inc = self.alloc_var(f"__s_in_{self.tmp_count}")
+            t_addr = self.alloc_var(f"__s_ad_{self.tmp_count}")
+            self.tmp_count += 1
+
+            self.emit(Opcode.ST, ptr)
+            self.emit(Opcode.LD_PTR, ptr)
+            self.emit(Opcode.ST, length)
+            self.emit(Opcode.LDI, 1)
+            self.emit(Opcode.ST, idx)
+            loop_start = len(self.code)
+            self.emit(Opcode.LD, idx)
+            self.emit(Opcode.PUSH)
+            self.emit(Opcode.LD, length)
+            self.emit(Opcode.ST, t_cmp)
+            self.emit(Opcode.POP)
+            self.emit(Opcode.CMP, t_cmp)
+            idx_jgt = self.emit(Opcode.JGT, 0)
+
+            self.emit(Opcode.LD, ptr)
+            self.emit(Opcode.PUSH)
+            self.emit(Opcode.LD, idx)
+            self.emit(Opcode.ST, t_add)
+            self.emit(Opcode.POP)
+            self.emit(Opcode.ADD, t_add)
+            self.emit(Opcode.ST, t_addr)
+
+            self.emit(Opcode.LD_PTR, t_addr)
+            self.emit(Opcode.OUT, 3)
+
+            self.emit(Opcode.LD, idx)
+            self.emit(Opcode.PUSH)
+            self.emit(Opcode.LDI, 1)
+            self.emit(Opcode.ST, t_inc)
+            self.emit(Opcode.POP)
+            self.emit(Opcode.ADD, t_inc)
+            self.emit(Opcode.ST, idx)
+            self.emit(Opcode.JMP, loop_start)
+
+            self.code[idx_jgt] = (Opcode.JGT, len(self.code))
+
+            self.emit(Opcode.LDI, 1)
 
         elif t == "in":
             self.emit(Opcode.IN, ast["port"])
@@ -315,28 +334,23 @@ class LispCompiler:
         self.pending_calls.append((1, "isr"))
         self.emit(Opcode.JMP, 0)
         self.emit(Opcode.NOP)
-
-        has_isr = False
+        has_isr = any(ast["type"] == "defirq" for ast in asts)
         for ast in asts:
-            if ast["type"] == "defirq":
-                has_isr = True
             if ast["type"] in ["defun", "defirq"]:
-                name = ast.get("name", "isr")
-                self.functions[name] = {"params": ast.get("params", []), "addr": None}
-
+                self.functions[ast.get("name", "isr")] = {
+                    "params": ast.get("params", []),
+                    "addr": None,
+                }
         for ast in asts:
             if ast["type"] not in ["defun", "defirq"]:
                 self.compile_expr(ast)
         self.emit(Opcode.HLT)
-
         if not has_isr:
             self.functions["isr"] = {"params": [], "addr": len(self.code)}
             self.emit(Opcode.IRET)
-
         for ast in asts:
             if ast["type"] in ["defun", "defirq"]:
                 self.compile_expr(ast)
-
         for idx, fname in self.pending_calls:
             if fname in self.functions:
                 self.code[idx] = (self.code[idx][0], self.functions[fname]["addr"])
@@ -347,24 +361,21 @@ class LispCompiler:
             encoded = encode_instruction(op, arg)
             binary.extend(encoded)
             debug_text += f"{i:04} - {encoded.hex().upper()} - {op.name} {arg}\n"
-
         while len(binary) // 4 < self.data_base:
             binary.extend(encode_instruction(Opcode.NOP, 0))
         for d in self.data:
             binary.extend(d.to_bytes(4, byteorder="little", signed=True))
-
         return binary, debug_text
 
 
 if __name__ == "__main__":
+    if len(sys.argv) < 3:
+        sys.exit(1)
     with open(sys.argv[1], "r", encoding="utf-8") as src_file:
         source = src_file.read()
-
     binary, debug = LispCompiler().compile(LispParser(source).parse_program())
-
     with open(sys.argv[2], "wb") as bin_file:
         bin_file.write(binary)
-
     if len(sys.argv) == 4:
         with open(sys.argv[3], "w", encoding="utf-8") as dbg_file:
             dbg_file.write(debug)
